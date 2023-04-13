@@ -2,6 +2,7 @@ use read_mappings::read_mappings;
 use crate::read_mappings::ScriptData;
 mod functions;
 mod read_mappings;
+mod convert;
 
 fn main() {
     let foo =  ScriptData {
@@ -14,12 +15,7 @@ fn main() {
     let input: String = "अस्त्य् उत्तरस्यां दिशि देवतात्मा हिमालयो नाम नगाधिराजः ।
     पूर्वापरौ तोयनिधी विगाह्य स्थितः पृथिव्या इव मानदण्डः ॥".to_string();
 
-    println!("\n\n{:?}\n\n", input);
-
-    for i in input.chars(){
-        // println!("{:?},{:?}", i, devanagari.consonants.main.contains(&i.to_string()) );
-        println!("{:?},{:?}", i, functions::identify_type(i, devanagari));
-    }
+    _ = convert::convert_indic_to_roman(input, devanagari);
 
     println!("\n\n{:?}", devanagari);
     println!("\n\n{:?}", slp1);
