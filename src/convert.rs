@@ -45,6 +45,12 @@ pub fn convert_indic_to_roman(input: &String, source: &Script, destination: &Scr
                 | "combiningsigns.ayogavaha" => {
                     output.push_str(hash_map.get(s.as_str()).unwrap());
                 }
+                "space" => {
+                    output.push_str(" ");
+                }
+                "new-line" => {
+                    output.push_str("\n");
+                }
                 _ => {}
             };
         }
