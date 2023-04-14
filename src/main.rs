@@ -19,7 +19,4 @@ fn main() {
     let converted = convert::convert_indic_to_roman(&input, devanagari, slp1);
 
     println!("\n\n{:?}\n\n{:?}\n\n", input, converted);
-
-    println!("\n\n{:?}", devanagari);
-    println!("\n\n{:?}", slp1);
 }
