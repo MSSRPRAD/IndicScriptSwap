@@ -1,11 +1,11 @@
-use read_mappings::read_mappings;
 use crate::read_mappings::ScriptData;
+use read_mappings::read_mappings;
+mod convert;
 mod functions;
 mod read_mappings;
-mod convert;
 
 fn main() {
-    let foo =  ScriptData {
+    let foo = ScriptData {
         data: read_mappings(),
     };
 
@@ -13,9 +13,12 @@ fn main() {
     let slp1 = foo.data.scripts.get("slp1").unwrap();
 
     let input: String = "अस्त्य् उत्तरस्यां दिशि देवतात्मा हिमालयो नाम नगाधिराजः ।
-    पूर्वापरौ तोयनिधी विगाह्य स्थितः पृथिव्या इव मानदण्डः ॥".to_string();
+    पूर्वापरौ तोयनिधी विगाह्य स्थितः पृथिव्या इव मानदण्डः ॥"
+        .to_string();
 
-    _ = convert::convert_indic_to_roman(input, devanagari);
+    let converted = convert::convert_indic_to_roman(input, devanagari, slp1);
+
+    println!("\n\n{:?}\n\n", converted);
 
     println!("\n\n{:?}", devanagari);
     println!("\n\n{:?}", slp1);
