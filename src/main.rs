@@ -16,9 +16,9 @@ fn main() {
     पूर्वापरौ तोयनिधी विगाह्य स्थितः पृथिव्या इव मानदण्डः ॥"
         .to_string();
 
-    let converted = convert::convert_indic_to_roman(input, devanagari, slp1);
+    let converted = convert::convert_indic_to_roman(&input, devanagari, slp1);
 
-    println!("\n\n{:?}\n\n", converted);
+    println!("\n\n{:?}\n\n{:?}\n\n", input, converted);
 
     println!("\n\n{:?}", devanagari);
     println!("\n\n{:?}", slp1);

@@ -11,7 +11,17 @@ pub fn identify_type(c: char, data: &Script) -> (String, usize) {
                 .position(|x| x.eq(&c.clone().to_string()))
                 .unwrap(),
         );
-    } else if data.vowels.main.contains(&c.to_string().to_string()) {
+    } 
+    else if data.combiningsigns.ayogavaha.contains(&c.to_string().to_string()) {
+        return (
+            "combiningsigns.ayogavaha".to_string(),
+            data.combiningsigns.ayogavaha
+                .iter()
+                .position(|x| x.eq(&c.clone().to_string()))
+                .unwrap(),
+        );
+    } 
+    else if data.vowels.main.contains(&c.to_string().to_string()) {
         return (
             "vowels.main".to_string(),
             data.vowels
@@ -83,6 +93,7 @@ pub fn make_hash_map<'a>(source: &'a Script, destination: &'a Script) -> HashMap
         (&source.numerals, &destination.numerals),
         (&source.others.aytham, &destination.others.aytham),
         (&source.others.symbols, &destination.others.symbols),
+        (&source.combiningsigns.ayogavaha, &destination.combiningsigns.ayogavaha),
     ];
     for (s, d) in v {
         hash_map.extend(
