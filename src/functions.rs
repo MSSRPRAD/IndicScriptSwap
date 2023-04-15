@@ -112,26 +112,29 @@ pub fn make_hash_map<'a>(
         1 => {
             v = vec![(&source.consonants.main, &destination.consonants.main)];
         }
-        1 => {
+        2 => {
             v = vec![(&source.vowels.main, &destination.vowels.main)];
         }
-        2 => {
+        3 => {
             v = vec![(&source.vowelsigns.main, &destination.vowelsigns.main)];
         }
-        3 => {
+        4 => {
             v = vec![(&source.vowelsigns.virama, &destination.vowelsigns.virama)];
         }
-        4 => {
+        5 => {
             v = vec![(&source.numerals, &destination.numerals)];
         }
-        5 => {
+        6 => {
             v = vec![(&source.others.aytham, &destination.others.aytham)];
         }
-        6 => {
+        7 => {
             v = vec![(
                 &source.combiningsigns.ayogavaha,
                 &destination.combiningsigns.ayogavaha,
             )];
+        }
+        8 => {
+            v = vec![(&source.others.symbols, &destination.others.symbols)];
         }
         _ => {}
     }

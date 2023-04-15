@@ -1,29 +1,3 @@
    Compiling transliterator-ferris v0.1.0 (/home/pradyumnamalladi/Desktop/transliterate-ferris)
-warning: unreachable pattern
-   --> src/functions.rs:115:9
-    |
-115 |         1 => {
-    |         ^
-    |
-    = note: `#[warn(unreachable_patterns)]` on by default
-
-warning: value assigned to `i` is never read
-  --> src/convert.rs:89:33
-   |
-89 | ...                   i += 1;
-   |                       ^
-   |
-   = help: maybe it is overwritten before being read?
-   = note: `#[warn(unused_assignments)]` on by default
-
-warning: value assigned to `i` is never read
-  --> src/convert.rs:95:33
-   |
-95 | ...                   i += 1;
-   |                       ^
-   |
-   = help: maybe it is overwritten before being read?
-
-warning: `transliterator-ferris` (bin "transliterator-ferris") generated 3 warnings
-    Finished dev [unoptimized + debuginfo] target(s) in 0.27s
+    Finished dev [unoptimized + debuginfo] target(s) in 0.29s
      Running `target/debug/transliterator-ferris`
