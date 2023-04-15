@@ -11,17 +11,20 @@ pub fn identify_type(c: char, data: &Script) -> (String, usize) {
                 .position(|x| x.eq(&c.clone().to_string()))
                 .unwrap(),
         );
-    } 
-    else if data.combiningsigns.ayogavaha.contains(&c.to_string().to_string()) {
+    } else if data
+        .combiningsigns
+        .ayogavaha
+        .contains(&c.to_string().to_string())
+    {
         return (
             "combiningsigns.ayogavaha".to_string(),
-            data.combiningsigns.ayogavaha
+            data.combiningsigns
+                .ayogavaha
                 .iter()
                 .position(|x| x.eq(&c.clone().to_string()))
                 .unwrap(),
         );
-    } 
-    else if data.vowels.main.contains(&c.to_string().to_string()) {
+    } else if data.vowels.main.contains(&c.to_string().to_string()) {
         return (
             "vowels.main".to_string(),
             data.vowels
@@ -83,18 +86,55 @@ pub fn identify_type(c: char, data: &Script) -> (String, usize) {
     }
 }
 
-pub fn make_hash_map<'a>(source: &'a Script, destination: &'a Script) -> HashMap<&'a str, &'a str> {
+pub fn make_hash_map<'a>(
+    source: &'a Script,
+    destination: &'a Script,
+    t: usize,
+) -> HashMap<&'a str, &'a str> {
     let mut hash_map: HashMap<&str, &str> = HashMap::new();
-    let v: Vec<(&Vec<String>, &Vec<String>)> = vec![
-        (&source.consonants.main, &destination.consonants.main),
-        (&source.vowels.main, &destination.vowels.main),
-        (&source.vowelsigns.main, &destination.vowelsigns.main),
-        (&source.vowelsigns.virama, &destination.vowelsigns.virama),
-        (&source.numerals, &destination.numerals),
-        (&source.others.aytham, &destination.others.aytham),
-        (&source.others.symbols, &destination.others.symbols),
-        (&source.combiningsigns.ayogavaha, &destination.combiningsigns.ayogavaha),
-    ];
+    let mut v = Vec::new();
+    match t {
+        0 => {
+            v = vec![
+                (&source.consonants.main, &destination.consonants.main),
+                (&source.vowels.main, &destination.vowels.main),
+                (&source.vowelsigns.main, &destination.vowelsigns.main),
+                (&source.vowelsigns.virama, &destination.vowelsigns.virama),
+                (&source.numerals, &destination.numerals),
+                (&source.others.aytham, &destination.others.aytham),
+                (&source.others.symbols, &destination.others.symbols),
+                (
+                    &source.combiningsigns.ayogavaha,
+                    &destination.combiningsigns.ayogavaha,
+                ),
+            ];
+        }
+        1 => {
+            v = vec![(&source.consonants.main, &destination.consonants.main)];
+        }
+        1 => {
+            v = vec![(&source.vowels.main, &destination.vowels.main)];
+        }
+        2 => {
+            v = vec![(&source.vowelsigns.main, &destination.vowelsigns.main)];
+        }
+        3 => {
+            v = vec![(&source.vowelsigns.virama, &destination.vowelsigns.virama)];
+        }
+        4 => {
+            v = vec![(&source.numerals, &destination.numerals)];
+        }
+        5 => {
+            v = vec![(&source.others.aytham, &destination.others.aytham)];
+        }
+        6 => {
+            v = vec![(
+                &source.combiningsigns.ayogavaha,
+                &destination.combiningsigns.ayogavaha,
+            )];
+        }
+        _ => {}
+    }
     for (s, d) in v {
         hash_map.extend(
             s.iter()
