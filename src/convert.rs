@@ -104,68 +104,49 @@ pub fn convert_roman_to_indic(input: &String, source: &Script, destination: &Scr
             let (t, _pos) = identify_type(c, source);
             match t.as_str() {
                 "consonants.main" => {
-                    // If previous char is a consonant we push a virama before.
-                    if i > 0 {
-                        match identify_type(output.chars().nth(i - 1).unwrap(), destination)
-                            .0
-                            .as_str()
-                        {
-                            "consonants.main" => {
-                                output.push_str(destination.vowelsigns.virama[0].as_str());
-                            },
-                            _ => {
-
-                            }
-                        }
-                    }
+                    // check if the next character in input is also a character
+                    // if so, push a virama also
                     output.push_str(hash_map_consonants_main.get(s.as_str()).unwrap());
-                }
-                "vowelsigns.main" => {
-                    // Check if there is a previous character
-                    // If there is a next character
-                    if i > 0 {
-                        match identify_type(output.chars().nth(i - 1).unwrap(), destination)
+                    if let Some(_val1) = input.chars().nth(i + 1) {
+                        match identify_type(input.chars().nth(i + 1).unwrap(), source)
                             .0
                             .as_str()
                         {
-                            // If the previous one is a consonant we push virama and vowelsigns.main to the output
-                            "consonants.main" => {
+                            "consonants.main" | "space" | "new-line" | "numerals" => {
                                 output.push_str(destination.vowelsigns.virama[0].as_str());
-                                output.push_str(hash_map_vowelsigns_main.get(s.as_str()).unwrap());
-                                continue;
                             }
-
-                            // Otherwise push vowelsigns.main ?
-                            _ => {output.push_str(hash_map_vowelsigns_main.get(s.as_str()).unwrap());}
+                            _ => {
+                                // Do Nothing
+                            }
                         }
-                    } else {
-                        output.push_str(hash_map_vowelsigns_main.get(s.as_str()).unwrap());
-                        continue;
                     }
                 }
-                "vowels.main" => {
-                    // Check if there is a previous character
-                    // If there is a next character
-                    if i > 0 {
-                        match identify_type(output.chars().nth(i - 1).unwrap(), destination)
+                "vowelsigns.main" | "vowels.main"=> {
+                    // println!("reached here");
+                    // Check if the previous character in input was a consonant
+                    // If so push a vowelsigns.main
+                    // else push vowels.main
+                    if i>0 {
+                        match identify_type(input.chars().nth(i - 1).unwrap(), source)
                             .0
                             .as_str()
                         {
-                            // If the previous one is a consonant we push vowelsigns.main to the output
                             "consonants.main" => {
-                                output.push_str(hash_map_vowels_main.get(s.as_str()).unwrap());
-                                continue;
+                                if let Some(_) = hash_map_vowelsigns_main.get(s.as_str()) {
+                                    output.push_str(hash_map_vowelsigns_main.get(s.as_str()).unwrap());
+                                } else {
+                                    if input.chars().nth(i).unwrap()!='a' {
+                                        output.push_str(hash_map_vowels_main.get(s.as_str()).unwrap());
+                                    }
+                                }
+                                
                             }
-                            // If previous character is a vowel (this shouldn't happen I think but not sure) | space | numeral  we push vowels.main to the output
-                            "vowels.main" | "space" | "numerals" => {
+                            _ => {
                                 output.push_str(hash_map_vowels_main.get(s.as_str()).unwrap());
-                                continue;
                             }
-                            // Otherwise do nothing
-                            _ => {}
                         }
                     } else {
-                        output.push_str(hash_map_vowels_main.get(s.as_str()).unwrap());
+                      output.push_str(hash_map_vowels_main.get(s.as_str()).unwrap());
                     }
                 }
                 "vowelsigns.virama" => {
@@ -181,20 +162,6 @@ pub fn convert_roman_to_indic(input: &String, source: &Script, destination: &Scr
                     output.push_str(hash_map_combiningsigns_ayogavaha.get(s.as_str()).unwrap());
                 }
                 "space" => {
-                    // If previous character is a consonant.main, we push a virama also to the output
-                    if i > 0 {
-                        match identify_type(output.chars().nth(i - 1).unwrap(), destination)
-                            .0
-                            .as_str()
-                        {
-                            "consonants.main" => {
-                                output.push_str(destination.vowelsigns.virama[0].as_str());
-                            },
-                            _ => {
-
-                            }
-                        }
-                    }
                     output.push_str(" ");
                 }
                 "new-line" => {
