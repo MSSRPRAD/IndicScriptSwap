@@ -1,2 +1,3 @@
-    Finished release [optimized] target(s) in 0.03s
-     Running `target/release/transliterator-ferris`
+   Compiling transliterator-ferris v0.1.0 (/home/pradyumnamalladi/Desktop/transliterate-ferris)
+    Finished dev [unoptimized + debuginfo] target(s) in 0.32s
+     Running `target/debug/transliterator-ferris`

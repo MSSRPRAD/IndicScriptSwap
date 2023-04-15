@@ -135,7 +135,7 @@ pub fn convert_roman_to_indic(input: &String, source: &Script, destination: &Scr
                                 if let Some(_) = hash_map_vowelsigns_main.get(s.as_str()) {
                                     output.push_str(hash_map_vowelsigns_main.get(s.as_str()).unwrap());
                                 } else {
-                                    if input.chars().nth(i).unwrap()!='a' {
+                                    if input.chars().nth(i).unwrap().to_string()!= source.vowels.main[0] {
                                         output.push_str(hash_map_vowels_main.get(s.as_str()).unwrap());
                                     }
                                 }
