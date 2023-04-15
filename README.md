@@ -7,7 +7,10 @@
 
 `cd transliterate-ferris`
 
-`time cargo run --release`
+`time cargo run --release 1>out.txt 2>error.txt`
+
+`out.txt` contains the output. 
+`error.txt` contains the warnings and error messages emmitted by the program.
 
 `main.rs` contains a sort of 'demo'. The input text is given by:
 
@@ -23,6 +26,6 @@ The output generated for the above input text was:
 
 ### NOTE:
 
-Only devanagari -> slp1 (and as a consequence probably a few other roman scripts) is implemented as of now.
+Only devanagari -> slp1 and slp1 -> devanagari (and as a consequence probably a few other scripts (I have checked telugu in place of devanagari)) is implemented as of now.
 
 Primary Focus is transliterating between devanagari to slp1 as many programs require input in slp1 and rust has no transliteration library from devanagari -> slp1 yet.
