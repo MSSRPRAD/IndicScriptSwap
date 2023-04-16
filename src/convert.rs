@@ -121,32 +121,37 @@ pub fn convert_roman_to_indic(input: &String, source: &Script, destination: &Scr
                         }
                     }
                 }
-                "vowelsigns.main" | "vowels.main"=> {
+                "vowelsigns.main" | "vowels.main" => {
                     // println!("reached here");
                     // Check if the previous character in input was a consonant
                     // If so push a vowelsigns.main
                     // else push vowels.main
-                    if i>0 {
+                    if i > 0 {
                         match identify_type(input.chars().nth(i - 1).unwrap(), source)
                             .0
                             .as_str()
                         {
                             "consonants.main" => {
                                 if let Some(_) = hash_map_vowelsigns_main.get(s.as_str()) {
-                                    output.push_str(hash_map_vowelsigns_main.get(s.as_str()).unwrap());
+                                    output.push_str(
+                                        hash_map_vowelsigns_main.get(s.as_str()).unwrap(),
+                                    );
                                 } else {
-                                    if input.chars().nth(i).unwrap().to_string()!= source.vowels.main[0] {
-                                        output.push_str(hash_map_vowels_main.get(s.as_str()).unwrap());
+                                    if input.chars().nth(i).unwrap().to_string()
+                                        != source.vowels.main[0]
+                                    {
+                                        output.push_str(
+                                            hash_map_vowels_main.get(s.as_str()).unwrap(),
+                                        );
                                     }
                                 }
-                                
                             }
                             _ => {
                                 output.push_str(hash_map_vowels_main.get(s.as_str()).unwrap());
                             }
                         }
                     } else {
-                      output.push_str(hash_map_vowels_main.get(s.as_str()).unwrap());
+                        output.push_str(hash_map_vowels_main.get(s.as_str()).unwrap());
                     }
                 }
                 "vowelsigns.virama" => {
