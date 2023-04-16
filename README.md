@@ -33,7 +33,7 @@ Only devanagari -> slp1 and slp1 -> devanagari (and as a consequence probably a 
 
 (Note: Can't convert from iast/hk to any because code requires seeing two characters of input text at once (current and previous) and only in slp1 each sound has one character.)
 
-Many more scripts can be transliterated indirectly (eg: telugu->devanagari = telugu->slp1->devanagari)
+Many more transliterations between scripts not mentioned here can be achieved indirectly (eg: telugu->devanagari = telugu->slp1->devanagari)
 
 | source key | destination key | function                 |
 | ---------- | --------------- | ------------------------ |
