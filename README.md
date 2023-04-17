@@ -31,7 +31,7 @@ Only devanagari -> slp1 and slp1 -> devanagari (and as a consequence probably a 
 
 ## <b> Some conversions that that I have tested (Need to test more) :</b>
 
-(Note: Can't convert from iast/hk to any because code requires seeing two characters of input text at once (current and previous) and only in slp1 each sound has one character.)
+(Note: Can't convert yet from itrans/hk to any because code requires seeing two characters of input text at once (current and previous) and only in slp1 each sound has one character.)
 
 Many more transliterations between scripts not mentioned here can be achieved indirectly (eg: telugu->devanagari = telugu->slp1->devanagari)
 
@@ -49,6 +49,9 @@ Many more transliterations between scripts not mentioned here can be achieved in
 | slp1       | devanagari      | convert_roman_to_indic() |
 | slp1       | telugu          | convert_roman_to_indic() |
 | slp1       | kannada         | convert_roman_to_indic() |
-|            |                 |                          |
+| slp1       | itrans          | convert_roman_to_roman() |
+| iast       | slp1            | convert_roman_to_roman() |
+| slp1       | iast            | convert_roman_to_roman   |
+| iast       | itrans          | convert_roman_to_roman() |
 
 Primary Focus is transliterating between devanagari to slp1 as many programs require input in slp1 and rust has no transliteration library from devanagari -> slp1 yet.

@@ -9,129 +9,129 @@ mod read_mappings;
 fn main() {
     let foo = &data::HASH_MAP;
 
-    let destination = foo.get("telugu").unwrap();
-    let source = foo.get("slp1").unwrap();
+    let destination = foo.get("itrans").unwrap();
+    let source = foo.get("iast").unwrap();
 
-    let input = "asty uttarasyAM diSi devatAtmA himAlayo nAma nagADirAjaH .
-    pUrvAparO toyaniDI vigAhya sTitaH pfTivyA iva mAnadaRqaH ..
-    yaM sarvaSElAH parikalpya vatsaM merO sTite dogDari dohadakze .
-    BAsvanti ratnAni mahOzaDIS ca pfTUpadizwAM duduhur DaritrIm ..
-    anantaratnapraBavasya yasya himaM na sOBAgyavilopi jAtam .
-    eko hi dozo guRasaMnipAte nimajjatIndoH kiraRezv ivANkaH ..
-    yaS cApsaroviBramamaRqanAnAM saMpAdayitrIM SiKarEr biBarti .
-    balAhakacCedaviBaktarAgAm akAlasaMDyAm iva DAtumattAm ..
-    AmeKalaM saMcaratAM GanAnAM cCAyAm aDaHsAnugatAM nizevya .
-    udvejitA vfzwiBir ASrayante SfNgARi yasyAtapavanti sidDAH ..
-    padaM tuzArasrutiDOtaraktaM yasminn adfzwvApi hatadvipAnAm .
-    vidanti mArgaM naKaranDramuktEr muktAPalEH kesariRAM kirAtAH ..
-    nyastAkzarA DAturasena yatra BUrjatvacaH kuYjarabinduSoRAH .
-    vrajanti vidyADarasundarIRAm anaNgaleKakriyayopayogam ..
-    yaH pUrayan kIcakaranDraBAgAn darImuKotTena samIraRena .
-    udgAsyatAm icCati kiMnarARAM tAnapradAyitvam ivopagantum ..
-    kapolakaRqUH kariBir vinetuM viGawwitAnAM saraladrumARAm .
-    yatra srutakzIratayA prasUtaH sAnUni ganDaH suraBIkaroti ..
-    vanecarARAM vanitAsaKAnAM darIgfhotsaNganizaktaBAsaH .
-    Bavanti yatrOzaDayo rajanyAm atElapUrAH suratapradIpAH ..
-    udvejayaty aNgulipArzRiBAgAn mArge SilIBUtahime 'pi yatra .
-    na durvahaSroRipayoDarArtA Bindanti mandAM gatim aSvamuKyaH ..
-    divAkarAd rakzati yo guhAsu lInaM divA BItam ivAnDakAram .
-    kzudre 'pi nUnaM SaraRaM prapanne mamatvam uccEHSirasAM satIva ..
-    lANgUlavikzepavisarpiSoBEr itas tataS candramarIcigOrEH .
-    yasyArTayuktaM girirAjaSabdaM kurvanti vAlavyajanES camaryaH ..
-    yatrAMSukAkzepavilajjitAnAM yadfcCayA kiMpuruzANganAnAm .
-    darIgfhadvAravilambibimbAs tiraskariRyo jaladA Bavanti ..
-    BAgIraTInirJarasIkarARAM voQA muhuH kampitadevadAruH .
-    yad vAyur anvizwamfgEH kirAtEr Asevyate BinnaSiKaRqibarhaH ..
-    saptarzihastAvacitAvaSezARy aDo vivasvAn parivartamAnaH .
-    padmAni yasyAgrasaroruhARi praboDayaty UrDvamuKEr mayUKEH ..
-    yajYANgayonitvam avekzya yasya sAraM DaritrIDaraRakzamaM ca .
-    prajApatiH kalpitayajYaBAgaM SElADipatyaM svayam anvatizWat ..
-    sa mAnasIM merusaKaH pitFRAM kanyAM kulasya sTitaye sTitijYaH .
-    menAM munInAm api mAnanIyAm AtmAnurUpAM viDinopayeme ..
-    kAlakrameRATa tayoH pravftte svarUpayogye surataprasaNge .
-    manoramaM yOvanam udvahantyA garBo 'Bavad BUDararAjapatnyAH ..
-    asUta sA nAgavaDUpaBogyaM mEnAkam amBoniDibadDasaKyam .
-    krudDe 'pi pakzacCidi vftraSatrAv avedanAjYaM kuliSakzatAnAm ..
-    aTAvamAnena pituH prayuktA dakzasya kanyA BavapUrvapatnI .
-    satI satI yogavisfzwadehA tAM janmane SElavaDUM prapede ..
-    sA BUDarARAm aDipena tasyAM samADimatyAm udapAdi BavyA .
-    samyakprayogAd aparikzatAyAM nItAv ivotsAhaguRena saMpat ..
-    prasannadik pAMsuviviktavAtaM SaNKasvanAnantarapuzpavfzwi .
-    SarIriRAM sTAvarajaNgamAnAM suKAya tajjanmadinaM baBUva ..
-    tayA duhitrA sutarAM savitrI sPuratpraBAmaRqalayA cakAse .
-    vidUraBUmir navameGaSabdAd udBinnayA ratnaSalAkayeva ..
-    dine dine sA parivarDamAnA labDodayA cAndramasIva leKA .
-    pupoza lAvaRyamayAn viSezAY jyotsnAntarARIva kalAntarARi ..
-    tAM pArvatIty ABijanena nAmnA banDupriyAM banDujano juhAva .
-    u meti mAtrA tapaso nizidDA paScAd umAKyAM sumuKI jagAma ..
-    mahIBftaH putravato 'pi dfzwis tasminn apatye na jagAma tfptim .
-    anantapuzpasya maDor hi cUte dvirePamAlA saviSezasaNgA ..
-    praBAmahatyA SiKayeva dIpas trimArgayeva tridivasya mArgaH .
-    saMskAravatyeva girA manIzI tayA sa pUtaS ca viBUzitaS ca ..
-    mandAkinIsEkatavedikABiH sA kandukEH kftrimaputrakES ca .
-    reme muhur maDyagatA saKInAM krIqArasaM nirviSatIva bAlye ..
-    tAM haMsamAlAH SaradIva gaNgAM mahOzaDiM naktam ivAtmaBAsaH .
-    sTiropadeSAm upadeSakAle prapedire prAktanajanmavidyAH ..
-    asaMBftaM maRqanam aNgayazwer anAsavAKyaM karaRaM madasya .
-    kAmasya puzpavyatiriktam astraM bAlyAt paraM sATa vayaH prapede ..
-    unmIlitaM tUlikayeva citraM sUryAMSuBir Binnam ivAravindam .
-    baBUva tasyAS caturasraSoBi vapur viBaktaM navayOvanena ..
-    aByunnatANguzWanaKapraBABir nikzepaRAd rAgam ivodgirantO .
-    Ajahratus taccaraRO pfTivyAM sTalAravindaSriyam avyavasTAm ..
-    sA rAjahaMsEr iva saMnatANgI gatezu lIlAYcitavikramezu .
-    vyanIyata pratyupadeSalubDEr AditsuBir nUpurasiYjitAni ..
-    vfttAnupUrve ca na cAtidIrGe jaNGe SuBe sfzwavatas tadIye .
-    SezANganirmARaviDO viDAtur lAvaRya utpAdya ivAsa yatnaH ..
-    nAgendrahastAs tvaci karkaSatvAd ekAntaSEtyAt kadalIviSezAH .
-    labDvApi loke pariRAhi rUpaM jAtAs tadUrvor upamAnabAhyAH ..
-    etAvatA nanv anumeyaSoBaM kAYcIguRasTAnam aninditAyAH .
-    AropitaM yad giriSena paScAd ananyanArIkamanIyam aNkam ..
-    tasyAH pravizwA natanABiranDraM rarAja tanvI navalomarAjiH .
-    nIvIm atikramya sitetarasya tanmeKalAmaDyamaRer ivArciH ..
-    maDyena sA vedivilagnamaDyA valitrayaM cAru baBAra bAlA .
-    ArohaRArTaM navayOvanena kAmasya sopAnam iva prayuktam ..
-    anyonyam utpIqayad utpalAkzyAH stanadvayaM pARqu taTA pravfdDam .
-    maDye yaTA SyAmamuKasya tasya mfRAlasUtrAntaram apy alaByam ..
-    SirIzapuzpADikasOkumAryO bAhU tadIyAv iti me vitarkaH .
-    parAjitenApi kftO harasya yO kaRWapASO makaraDvajena ..
-    kaRWasya tasyAH stanabanDurasya muktAkalApasya ca nistalasya .
-    anyonyaSoBAjananAd baBUva sADAraRo BUzaRaBUzyaBAvaH ..
-    candraM gatA padmaguRAn na BuNkte padmASritA cAndramasIm aBiKyAm .
-    umAmuKaM tu pratipadya lolA dvisaMSrayAM prItim avApa lakzmIH ..
-    puzpaM pravAlopahitaM yadi syAn muktAPalaM vA sPuwavidrumasTam .
-    tato 'nukuryAd viSadasya tasyAs tAmrOzWaparyastarucaH smitasya ..
-    svareRa tasyAm amftasruteva prajalpitAyAm aBijAtavAci .
-    apy anyapuzwA pratikUlaSabdA Srotur vitantrIr iva tAqyamAnA ..
-    pravAtanIlotpalanirviSezam aDIraviprekzitam AyatAkzyA .
-    tayA gfhItaM nu mfgANganAByas tato gfhItaM nu mfgANganABiH ..
-    tasyAH SalAkAYjananirmiteva kAntir Bruvor AnataleKayor yA .
-    tAM vIkzya lIlAcaturAm anaNgaH svacApasOndaryamadaM mumoca ..
-    lajjA tiraScAM yadi cetasi syAd asaMSayaM parvatarAjaputryAH .
-    taM keSapASaM prasamIkzya kuryur vAlapriyatvaM SiTilaM camaryaH ..
-    sarvopamAdravyasamuccayena yaTApradeSaM viniveSitena .
-    sA nirmitA viSvasfjA prayatnAd ekasTasOndaryadidfkzayeva ..
-    tAM nAradaH kAmacaraH kadA cit kanyAM kila prekzya pituH samIpe .
-    samAdideSEkavaDUM BavitrIM premRA SarIrArDaharAM harasya ..
-    guruH pragalBe 'pi vayasy ato 'syAs tasTO nivfttAnyavarABilAzaH .
-    fte kfSAnor na hi mantrapUtam arhanti tejAMsy aparARi havyam ..
-    ayAcitAraM na hi devadevam adriH sutAM grAhayituM SaSAka .
-    aByarTanABaNgaBayena sADur mADyasTyam izwe 'py avalambate 'rTe ..
-    yadEva pUrve janane SarIraM sA dakzarozAt sudatI sasarja .
-    tadApraBfty eva vimuktasaNgaH patiH paSUnAm aparigraho 'BUt ..
-    sa kfttivAsAs tapase yatAtmA gaNgApravAhokzitadevadAru .
-    prasTaM himAdrer mfganABiganDi kiM cit kvaRatkiMnaram aDyuvAsa ..
-    gaRA nameruprasavAvataMsA BUrjatvacaH sparSavatIr daDAnAH .
-    manaHSilAvicCuritA nizeduH SEleyanadDezu SilAtalezu ..
-    tuzArasaMGAtaSilAH KurAgrEH samulliKan darpakalaH kakudmAn .
-    dfzwaH kaTaM cid gavayEr vivignEr asoQasiMhaDvanir unnanAda ..
-    tatrAgnim ADAya samitsamidDaM svam eva mUrtyantaram azwamUrtiH .
-    svayaM viDAtA tapasaH PalAnAm kenApi kAmena tapaS cacAra ..
-    anarGyam arGyeRa tam adrinATaH svargOkasAm arcitam arcayitvA .
-    ArADanAyAsya saKIsametAM samAdideSa prayatAM tanUjAm ..
-    pratyarTiBUtAm api tAM samADeH SuSrUzamARAM giriSo 'numene .
-    vikArahetO sati vikriyante yezAM na cetAMsi ta eva DIrAH ..
-    avacitabalipuzpA vedisaMmArgadakzA niyamaviDijalAnAM barhizAM copanetrI .
-    giriSam upacacAra pratyahaM sA sukeSI niyamitapariKedA tacCiraScandrapAdEH ..".to_string();
-    let converted = convert::convert_roman_to_indic(&input, source, destination);
+    let input = "asty uttarasyāṃ diśi devatātmā himālayo nāma nagādhirājaḥ .
+    pūrvāparau toyanidhī vigāhya sthitaḥ pṛthivyā iva mānadaṇḍaḥ ..
+    yaṃ sarvaśailāḥ parikalpya vatsaṃ merau sthite dogdhari dohadakṣe .
+    bhāsvanti ratnāni mahauṣadhīś ca pṛthūpadiṣṭāṃ duduhur dharitrīm ..
+    anantaratnaprabhavasya yasya himaṃ na saubhāgyavilopi jātam .
+    eko hi doṣo guṇasaṃnipāte nimajjatīndoḥ kiraṇeṣv ivāṅkaḥ ..
+    yaś cāpsarovibhramamaṇḍanānāṃ saṃpādayitrīṃ śikharair bibharti .
+    balāhakacchedavibhaktarāgām akālasaṃdhyām iva dhātumattām ..
+    āmekhalaṃ saṃcaratāṃ ghanānāṃ cchāyām adhaḥsānugatāṃ niṣevya .
+    udvejitā vṛṣṭibhir āśrayante śṛṅgāṇi yasyātapavanti siddhāḥ ..
+    padaṃ tuṣārasrutidhautaraktaṃ yasminn adṛṣṭvāpi hatadvipānām .
+    vidanti mārgaṃ nakharandhramuktair muktāphalaiḥ kesariṇāṃ kirātāḥ ..
+    nyastākṣarā dhāturasena yatra bhūrjatvacaḥ kuñjarabinduśoṇāḥ .
+    vrajanti vidyādharasundarīṇām anaṅgalekhakriyayopayogam ..
+    yaḥ pūrayan kīcakarandhrabhāgān darīmukhotthena samīraṇena .
+    udgāsyatām icchati kiṃnarāṇāṃ tānapradāyitvam ivopagantum ..
+    kapolakaṇḍūḥ karibhir vinetuṃ vighaṭṭitānāṃ saraladrumāṇām .
+    yatra srutakṣīratayā prasūtaḥ sānūni gandhaḥ surabhīkaroti ..
+    vanecarāṇāṃ vanitāsakhānāṃ darīgṛhotsaṅganiṣaktabhāsaḥ .
+    bhavanti yatrauṣadhayo rajanyām atailapūrāḥ suratapradīpāḥ ..
+    udvejayaty aṅgulipārṣṇibhāgān mārge śilībhūtahime 'pi yatra .
+    na durvahaśroṇipayodharārtā bhindanti mandāṃ gatim aśvamukhyaḥ ..
+    divākarād rakṣati yo guhāsu līnaṃ divā bhītam ivāndhakāram .
+    kṣudre 'pi nūnaṃ śaraṇaṃ prapanne mamatvam uccaiḥśirasāṃ satīva ..
+    lāṅgūlavikṣepavisarpiśobhair itas tataś candramarīcigauraiḥ .
+    yasyārthayuktaṃ girirājaśabdaṃ kurvanti vālavyajanaiś camaryaḥ ..
+    yatrāṃśukākṣepavilajjitānāṃ yadṛcchayā kiṃpuruṣāṅganānām .
+    darīgṛhadvāravilambibimbās tiraskariṇyo jaladā bhavanti ..
+    bhāgīrathīnirjharasīkarāṇāṃ voḍhā muhuḥ kampitadevadāruḥ .
+    yad vāyur anviṣṭamṛgaiḥ kirātair āsevyate bhinnaśikhaṇḍibarhaḥ ..
+    saptarṣihastāvacitāvaśeṣāṇy adho vivasvān parivartamānaḥ .
+    padmāni yasyāgrasaroruhāṇi prabodhayaty ūrdhvamukhair mayūkhaiḥ ..
+    yajñāṅgayonitvam avekṣya yasya sāraṃ dharitrīdharaṇakṣamaṃ ca .
+    prajāpatiḥ kalpitayajñabhāgaṃ śailādhipatyaṃ svayam anvatiṣṭhat ..
+    sa mānasīṃ merusakhaḥ pitṝṇāṃ kanyāṃ kulasya sthitaye sthitijñaḥ .
+    menāṃ munīnām api mānanīyām ātmānurūpāṃ vidhinopayeme ..
+    kālakrameṇātha tayoḥ pravṛtte svarūpayogye surataprasaṅge .
+    manoramaṃ yauvanam udvahantyā garbho 'bhavad bhūdhararājapatnyāḥ ..
+    asūta sā nāgavadhūpabhogyaṃ mainākam ambhonidhibaddhasakhyam .
+    kruddhe 'pi pakṣacchidi vṛtraśatrāv avedanājñaṃ kuliśakṣatānām ..
+    athāvamānena pituḥ prayuktā dakṣasya kanyā bhavapūrvapatnī .
+    satī satī yogavisṛṣṭadehā tāṃ janmane śailavadhūṃ prapede ..
+    sā bhūdharāṇām adhipena tasyāṃ samādhimatyām udapādi bhavyā .
+    samyakprayogād aparikṣatāyāṃ nītāv ivotsāhaguṇena saṃpat ..
+    prasannadik pāṃsuviviktavātaṃ śaṅkhasvanānantarapuṣpavṛṣṭi .
+    śarīriṇāṃ sthāvarajaṅgamānāṃ sukhāya tajjanmadinaṃ babhūva ..
+    tayā duhitrā sutarāṃ savitrī sphuratprabhāmaṇḍalayā cakāse .
+    vidūrabhūmir navameghaśabdād udbhinnayā ratnaśalākayeva ..
+    dine dine sā parivardhamānā labdhodayā cāndramasīva lekhā .
+    pupoṣa lāvaṇyamayān viśeṣāñ jyotsnāntarāṇīva kalāntarāṇi ..
+    tāṃ pārvatīty ābhijanena nāmnā bandhupriyāṃ bandhujano juhāva .
+    u meti mātrā tapaso niṣiddhā paścād umākhyāṃ sumukhī jagāma ..
+    mahībhṛtaḥ putravato 'pi dṛṣṭis tasminn apatye na jagāma tṛptim .
+    anantapuṣpasya madhor hi cūte dvirephamālā saviśeṣasaṅgā ..
+    prabhāmahatyā śikhayeva dīpas trimārgayeva tridivasya mārgaḥ .
+    saṃskāravatyeva girā manīṣī tayā sa pūtaś ca vibhūṣitaś ca ..
+    mandākinīsaikatavedikābhiḥ sā kandukaiḥ kṛtrimaputrakaiś ca .
+    reme muhur madhyagatā sakhīnāṃ krīḍārasaṃ nirviśatīva bālye ..
+    tāṃ haṃsamālāḥ śaradīva gaṅgāṃ mahauṣadhiṃ naktam ivātmabhāsaḥ .
+    sthiropadeśām upadeśakāle prapedire prāktanajanmavidyāḥ ..
+    asaṃbhṛtaṃ maṇḍanam aṅgayaṣṭer anāsavākhyaṃ karaṇaṃ madasya .
+    kāmasya puṣpavyatiriktam astraṃ bālyāt paraṃ sātha vayaḥ prapede ..
+    unmīlitaṃ tūlikayeva citraṃ sūryāṃśubhir bhinnam ivāravindam .
+    babhūva tasyāś caturasraśobhi vapur vibhaktaṃ navayauvanena ..
+    abhyunnatāṅguṣṭhanakhaprabhābhir nikṣepaṇād rāgam ivodgirantau .
+    ājahratus taccaraṇau pṛthivyāṃ sthalāravindaśriyam avyavasthām ..
+    sā rājahaṃsair iva saṃnatāṅgī gateṣu līlāñcitavikrameṣu .
+    vyanīyata pratyupadeśalubdhair āditsubhir nūpurasiñjitāni ..
+    vṛttānupūrve ca na cātidīrghe jaṅghe śubhe sṛṣṭavatas tadīye .
+    śeṣāṅganirmāṇavidhau vidhātur lāvaṇya utpādya ivāsa yatnaḥ ..
+    nāgendrahastās tvaci karkaśatvād ekāntaśaityāt kadalīviśeṣāḥ .
+    labdhvāpi loke pariṇāhi rūpaṃ jātās tadūrvor upamānabāhyāḥ ..
+    etāvatā nanv anumeyaśobhaṃ kāñcīguṇasthānam aninditāyāḥ .
+    āropitaṃ yad giriśena paścād ananyanārīkamanīyam aṅkam ..
+    tasyāḥ praviṣṭā natanābhirandhraṃ rarāja tanvī navalomarājiḥ .
+    nīvīm atikramya sitetarasya tanmekhalāmadhyamaṇer ivārciḥ ..
+    madhyena sā vedivilagnamadhyā valitrayaṃ cāru babhāra bālā .
+    ārohaṇārthaṃ navayauvanena kāmasya sopānam iva prayuktam ..
+    anyonyam utpīḍayad utpalākṣyāḥ stanadvayaṃ pāṇḍu tathā pravṛddham .
+    madhye yathā śyāmamukhasya tasya mṛṇālasūtrāntaram apy alabhyam ..
+    śirīṣapuṣpādhikasaukumāryau bāhū tadīyāv iti me vitarkaḥ .
+    parājitenāpi kṛtau harasya yau kaṇṭhapāśau makaradhvajena ..
+    kaṇṭhasya tasyāḥ stanabandhurasya muktākalāpasya ca nistalasya .
+    anyonyaśobhājananād babhūva sādhāraṇo bhūṣaṇabhūṣyabhāvaḥ ..
+    candraṃ gatā padmaguṇān na bhuṅkte padmāśritā cāndramasīm abhikhyām .
+    umāmukhaṃ tu pratipadya lolā dvisaṃśrayāṃ prītim avāpa lakṣmīḥ ..
+    puṣpaṃ pravālopahitaṃ yadi syān muktāphalaṃ vā sphuṭavidrumastham .
+    tato 'nukuryād viśadasya tasyās tāmrauṣṭhaparyastarucaḥ smitasya ..
+    svareṇa tasyām amṛtasruteva prajalpitāyām abhijātavāci .
+    apy anyapuṣṭā pratikūlaśabdā śrotur vitantrīr iva tāḍyamānā ..
+    pravātanīlotpalanirviśeṣam adhīraviprekṣitam āyatākṣyā .
+    tayā gṛhītaṃ nu mṛgāṅganābhyas tato gṛhītaṃ nu mṛgāṅganābhiḥ ..
+    tasyāḥ śalākāñjananirmiteva kāntir bhruvor ānatalekhayor yā .
+    tāṃ vīkṣya līlācaturām anaṅgaḥ svacāpasaundaryamadaṃ mumoca ..
+    lajjā tiraścāṃ yadi cetasi syād asaṃśayaṃ parvatarājaputryāḥ .
+    taṃ keśapāśaṃ prasamīkṣya kuryur vālapriyatvaṃ śithilaṃ camaryaḥ ..
+    sarvopamādravyasamuccayena yathāpradeśaṃ viniveśitena .
+    sā nirmitā viśvasṛjā prayatnād ekasthasaundaryadidṛkṣayeva ..
+    tāṃ nāradaḥ kāmacaraḥ kadā cit kanyāṃ kila prekṣya pituḥ samīpe .
+    samādideśaikavadhūṃ bhavitrīṃ premṇā śarīrārdhaharāṃ harasya ..
+    guruḥ pragalbhe 'pi vayasy ato 'syās tasthau nivṛttānyavarābhilāṣaḥ .
+    ṛte kṛśānor na hi mantrapūtam arhanti tejāṃsy aparāṇi havyam ..
+    ayācitāraṃ na hi devadevam adriḥ sutāṃ grāhayituṃ śaśāka .
+    abhyarthanābhaṅgabhayena sādhur mādhyasthyam iṣṭe 'py avalambate 'rthe ..
+    yadaiva pūrve janane śarīraṃ sā dakṣaroṣāt sudatī sasarja .
+    tadāprabhṛty eva vimuktasaṅgaḥ patiḥ paśūnām aparigraho 'bhūt ..
+    sa kṛttivāsās tapase yatātmā gaṅgāpravāhokṣitadevadāru .
+    prasthaṃ himādrer mṛganābhigandhi kiṃ cit kvaṇatkiṃnaram adhyuvāsa ..
+    gaṇā nameruprasavāvataṃsā bhūrjatvacaḥ sparśavatīr dadhānāḥ .
+    manaḥśilāvicchuritā niṣeduḥ śaileyanaddheṣu śilātaleṣu ..
+    tuṣārasaṃghātaśilāḥ khurāgraiḥ samullikhan darpakalaḥ kakudmān .
+    dṛṣṭaḥ kathaṃ cid gavayair vivignair asoḍhasiṃhadhvanir unnanāda ..
+    tatrāgnim ādhāya samitsamiddhaṃ svam eva mūrtyantaram aṣṭamūrtiḥ .
+    svayaṃ vidhātā tapasaḥ phalānām kenāpi kāmena tapaś cacāra ..
+    anarghyam arghyeṇa tam adrināthaḥ svargaukasām arcitam arcayitvā .
+    ārādhanāyāsya sakhīsametāṃ samādideśa prayatāṃ tanūjām ..
+    pratyarthibhūtām api tāṃ samādheḥ śuśrūṣamāṇāṃ giriśo 'numene .
+    vikārahetau sati vikriyante yeṣāṃ na cetāṃsi ta eva dhīrāḥ ..
+    avacitabalipuṣpā vedisaṃmārgadakṣā niyamavidhijalānāṃ barhiṣāṃ copanetrī .
+    giriśam upacacāra pratyahaṃ sā sukeśī niyamitaparikhedā tacchiraścandrapādaiḥ ..".to_string();
+    let converted = convert::convert_roman_to_roman(&input, source, destination);
     println!("{}", converted);
 }
