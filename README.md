@@ -27,11 +27,7 @@ The output generated for the above input text was:
 
 ### NOTE
 
-Only devanagari -> slp1 and slp1 -> devanagari (and as a consequence probably a few other scripts (I have checked telugu in place of devanagari)) is implemented as of now.
-
 ## <b> Some conversions that that I have tested (Need to test more) :</b>
-
-(Note: Can't convert yet from itrans/hk to any because code requires seeing two characters of input text at once (current and previous) and only in slp1 each sound has one character.)
 
 Many more transliterations between scripts not mentioned here can be achieved indirectly (eg: telugu->devanagari = telugu->slp1->devanagari)
 
