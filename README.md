@@ -4,7 +4,7 @@
 
 ## Issues
 
-1. Outrageous build time 
+1. Outrageous build time (36 seconds!!!)
    1. I thought removing the `serde` and `json` dependencies and reading from data.rs would improve the build time but it made it much much worse.
    2. The code does run a bit faster with this.
    3. rust-analyzer crashing on vs-code due to this.
