@@ -9,8 +9,8 @@ mod read_mappings;
 fn main() {
     let foo = &data::HASH_MAP;
 
-    let destination = foo.get("itrans").unwrap();
-    let source = foo.get("iast").unwrap();
+    let mut destination = foo.get("hk").unwrap();
+    let mut source = foo.get("iast").unwrap();
 
     let input = "asty uttarasyāṃ diśi devatātmā himālayo nāma nagādhirājaḥ .
     pūrvāparau toyanidhī vigāhya sthitaḥ pṛthivyā iva mānadaṇḍaḥ ..

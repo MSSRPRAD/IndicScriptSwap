@@ -1,7 +1,7 @@
 use crate::read_mappings::Script;
 use std::collections::HashMap;
 
-pub fn identify_type(c: char, data: &Script) -> (String, usize) {
+pub fn identify_type(c: &str, data: &Script) -> (String, usize) {
     if data.consonants.main.contains(&c.to_string().to_string()) {
         return (
             "consonants.main".to_string(),
@@ -77,12 +77,12 @@ pub fn identify_type(c: char, data: &Script) -> (String, usize) {
                 .position(|x| x.eq(&c.clone().to_string()))
                 .unwrap(),
         );
-    } else if c == ' ' {
+    } else if c == " " {
         return ("space".to_string(), 999);
-    } else if c == '\n' {
+    } else if c == "\n" {
         return ("new-line".to_string(), 999);
     } else {
-        return (String::from("Could not identify"), 999);
+        return (String::from("could.not.identify"), 999);
     }
 }
 
