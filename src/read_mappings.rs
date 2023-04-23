@@ -1,7 +1,6 @@
 // use serde::{Deserialize, Serialize};
 // use std::collections::HashMap;
 
-
 // #[derive(Debug, Serialize, Deserialize)]
 // pub struct Scripts {
 //     pub scripts: HashMap<String, Script>,

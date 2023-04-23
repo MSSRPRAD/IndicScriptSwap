@@ -16,21 +16,19 @@ pub fn convert_indic_to_roman(input: &String, source: &Script, destination: &Scr
     let hash_map_others_symbols = make_hash_map(source, destination, 8);
 
     let mut output: String = String::new();
-
-    for i in 0..input.len() {
+    let len = input.chars().count();
+    let chars: Vec<char> = input.chars().collect();
+    for i in 0..len {
         let c: char;
-        if let Some(_val) = input.chars().nth(i) {
-            c = input.chars().nth(i).unwrap();
+        if true {
+            c = chars[i];
             let s = &c.clone().to_string();
             let (t, _pos) = identify_type(&c.to_string(), source);
             match t.as_str() {
                 "consonants.main" => {
                     // If there is a next character
-                    if let Some(_val1) = input.chars().nth(i + 1) {
-                        match identify_type(&input.chars().nth(i + 1).unwrap().to_string(), source)
-                            .0
-                            .as_str()
-                        {
+                    if i < len - 1 {
+                        match identify_type(&chars[i + 1].to_string(), source).0.as_str() {
                             // If the next character is a virama or vowelsign or symbol or it is a vowel
                             "vowelsigns.virama" | "vowelsigns.main" | "others.symbols"
                             | "numerals" | "vowels.main" => {
@@ -97,37 +95,38 @@ pub fn convert_roman_to_roman(input: &String, source: &Script, destination: &Scr
     // If they don't we check the mapping for the current character only and push the corresponding destination string to the output.
     let mut output: String = String::new();
     let mut skip = false;
-    for i in 0..input.len() {
+    let len = input.chars().count();
+    let chars: Vec<char> = input.chars().collect();
+    for i in 0..len {
         if skip {
             skip = false;
             continue;
         }
         let s = &mut String::new();
         let foo = &mut String::new();
-        if let Some(_val) = input.chars().nth(i) {
-            let (t, _pos): (String, usize); 
-            if i<input.len()-1 {
-                if let Some(_val2) = input.chars().nth(i+1) {
-                        foo.push_str(&input.chars().nth(i).unwrap().to_string());
-                        foo.push_str(&input.chars().nth(i+1).unwrap().to_string());
-                    if identify_type(foo, source).0 == "could.not.identify"{
-                        s.push_str(&input.chars().nth(i).unwrap().to_string());
-                    } else {
-                        s.push_str(&input.chars().nth(i).unwrap().to_string());
-                        s.push_str(&input.chars().nth(i+1).unwrap().to_string());
-                        skip = true;
-                    }
+        {
+            let (t, _pos): (String, usize);
+
+            if i < len - 1 {
+                foo.push_str(&chars[i].to_string());
+                foo.push_str(&chars[i + 1].to_string());
+                if identify_type(foo, source).0 == "could.not.identify" {
+                    // println!("false| {:?}", foo);
+                    s.push_str(&chars[i].to_string());
                 } else {
-                    s.push_str(&input.chars().nth(i).unwrap().to_string());
+                    println!("true| {:?} | ", foo);
+                    s.push_str(&chars[i].to_string());
+                    s.push_str(&chars[i + 1].to_string());
+                    skip = true;
                 }
             } else {
-                s.push_str(&input.chars().nth(i).unwrap().to_string());
+                s.push_str(&chars[i].to_string());
             }
             (t, _pos) = identify_type(s, source);
+            if skip {println!("{:?}", t);}
             match t.as_str() {
                 "consonants.main" => {
                     output.push_str(hash_map_consonants_main.get(s.as_str()).unwrap());
-        
                 }
                 "vowels.main" => {
                     output.push_str(hash_map_vowels_main.get(s.as_str()).unwrap());
@@ -177,11 +176,12 @@ pub fn convert_roman_to_indic(input: &String, source: &Script, destination: &Scr
     let hash_map_others_symbols = make_hash_map(source, destination, 8);
 
     let mut output: String = String::new();
-
-    for i in 0..input.len() {
+    let len = input.chars().count();
+    let chars: Vec<char> = input.chars().collect();
+    for i in 0..len {
         let c: char;
-        if let Some(_val) = input.chars().nth(i) {
-            c = input.chars().nth(i).unwrap();
+        if true {
+            c = chars[i];
             let s = &c.clone().to_string();
             let (t, _pos) = identify_type(&c.to_string(), source);
             match t.as_str() {
@@ -189,11 +189,8 @@ pub fn convert_roman_to_indic(input: &String, source: &Script, destination: &Scr
                     // check if the next character in input is also a character
                     // if so, push a virama also
                     output.push_str(hash_map_consonants_main.get(s.as_str()).unwrap());
-                    if let Some(_val1) = input.chars().nth(i + 1) {
-                        match identify_type(&input.chars().nth(i + 1).unwrap().to_string(), source)
-                            .0
-                            .as_str()
-                        {
+                    if i < len - 1 {
+                        match identify_type(&chars[i + 1].to_string(), source).0.as_str() {
                             "consonants.main" | "space" | "new-line" | "numerals" => {
                                 output.push_str(destination.vowelsigns.virama[0].as_str());
                             }
@@ -209,19 +206,14 @@ pub fn convert_roman_to_indic(input: &String, source: &Script, destination: &Scr
                     // If so push a vowelsigns.main
                     // else push vowels.main
                     if i > 0 {
-                        match identify_type(&input.chars().nth(i - 1).unwrap().to_string(), source)
-                            .0
-                            .as_str()
-                        {
+                        match identify_type(&chars[i - 1].to_string(), source).0.as_str() {
                             "consonants.main" => {
                                 if let Some(_) = hash_map_vowelsigns_main.get(s.as_str()) {
                                     output.push_str(
                                         hash_map_vowelsigns_main.get(s.as_str()).unwrap(),
                                     );
                                 } else {
-                                    if input.chars().nth(i).unwrap().to_string()
-                                        != source.vowels.main[0]
-                                    {
+                                    if chars[i].to_string() != source.vowels.main[0] {
                                         output.push_str(
                                             hash_map_vowels_main.get(s.as_str()).unwrap(),
                                         );

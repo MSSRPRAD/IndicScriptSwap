@@ -1,10 +1,22 @@
 [package]
-name = "transliterator-ferris"
+name = "transliterate-ferris"
 version = "0.1.0"
 edition = "2021"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
+[profile.release]
+debug = 1
+incremental = true
+
 [dependencies]
 lazy_static = "1.4.0"
 maplit = "1" 
+
+[lib]
+name = "transliterate_ferris"
+path = "src/lib.rs"
+
+[[bin]]
+name = "transliterate_ferris"
+path = "src/main.rs"
