@@ -8,8 +8,7 @@
    1. I thought removing the `serde` and `json` dependencies and reading from data.rs would improve the build time but it made it much much worse.
    2. The code does run a bit faster with this.
    3. rust-analyzer crashing on vs-code due to this.
-2. Slow run-time (due to bad code. Probably using too many iterators everywhere)    
-   1. ~200 millisecond vs ~120 millisecond by `aksharamukha-python` on the same conversion.
+2. ~40 millisecond vs ~120 millisecond by `aksharamukha-python` on the same conversion. (Can be made even better)
 3. Too many ugly nested code blocks.
 4. No tests so changes can have unintended consequences.
 
