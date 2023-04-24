@@ -1,88 +1,48 @@
 use crate::read_mappings::Script;
 use std::collections::HashMap;
 
-pub fn identify_type(c: &str, data: &Script) -> (String, usize) {
+#[derive(PartialEq, Debug)]
+pub enum CharType {
+    ConsonantsMain,
+    CombiningSignsAyogavaha,
+    VowelsMain,
+    VowelSignsMain,
+    VowelSignsVirama,
+    Numerals,
+    OthersSymbols,
+    OthersAytham,
+    Space,
+    NewLine,
+    CouldNotIdentify,
+}
+
+pub fn identify_type(c: &str, data: &Script) -> CharType {
     if data.consonants.main.contains(&c.to_string().to_string()) {
-        return (
-            "consonants.main".to_string(),
-            data.consonants
-                .main
-                .iter()
-                .position(|x| x.eq(&c.clone().to_string()))
-                .unwrap(),
-        );
+        return CharType::ConsonantsMain;
     } else if data
         .combiningsigns
         .ayogavaha
         .contains(&c.to_string().to_string())
     {
-        return (
-            "combiningsigns.ayogavaha".to_string(),
-            data.combiningsigns
-                .ayogavaha
-                .iter()
-                .position(|x| x.eq(&c.clone().to_string()))
-                .unwrap(),
-        );
+        return CharType::CombiningSignsAyogavaha;
     } else if data.vowels.main.contains(&c.to_string().to_string()) {
-        return (
-            "vowels.main".to_string(),
-            data.vowels
-                .main
-                .iter()
-                .position(|x| x.eq(&c.clone().to_string()))
-                .unwrap(),
-        );
+        return CharType::VowelsMain;
     } else if data.vowelsigns.main.contains(&c.to_string().to_string()) {
-        return (
-            "vowelsigns.main".to_string(),
-            data.vowelsigns
-                .main
-                .iter()
-                .position(|x| x.eq(&c.clone().to_string()))
-                .unwrap(),
-        );
+        return CharType::VowelSignsMain;
     } else if data.vowelsigns.virama.contains(&c.to_string().to_string()) {
-        return (
-            "vowelsigns.virama".to_string(),
-            data.vowelsigns
-                .virama
-                .iter()
-                .position(|x| x.eq(&c.clone().to_string()))
-                .unwrap(),
-        );
+        return CharType::VowelSignsVirama;
     } else if data.numerals.contains(&c.to_string().to_string()) {
-        return (
-            "numerals".to_string(),
-            data.numerals
-                .iter()
-                .position(|x| x.eq(&c.clone().to_string()))
-                .unwrap(),
-        );
+        return CharType::Numerals;
     } else if data.others.symbols.contains(&c.to_string().to_string()) {
-        return (
-            "others.symbols".to_string(),
-            data.others
-                .symbols
-                .iter()
-                .position(|x| x.eq(&c.clone().to_string()))
-                .unwrap(),
-        );
+        return CharType::OthersSymbols;
     } else if data.others.aytham.contains(&c.to_string().to_string()) {
-        return (
-            "others.aytham".to_string(),
-            data.others
-                .aytham
-                .iter()
-                .position(|x| x.eq(&c.clone().to_string()))
-                .unwrap(),
-        );
+        return CharType::OthersAytham;
     } else if c == " " {
-        return ("space".to_string(), 999);
+        return CharType::Space;
     } else if c == "\n" {
-        return ("new-line".to_string(), 999);
+        return CharType::NewLine;
     } else {
-        return (String::from("could.not.identify"), 999);
+        return CharType::CouldNotIdentify;
     }
 }
 

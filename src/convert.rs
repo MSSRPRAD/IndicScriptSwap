@@ -1,4 +1,4 @@
-use crate::functions::{identify_type, make_hash_map};
+use crate::functions::{identify_type, make_hash_map, CharType};
 use crate::read_mappings::Script;
 
 pub fn convert_indic_to_roman(input: &String, source: &Script, destination: &Script) -> String {
@@ -23,15 +23,18 @@ pub fn convert_indic_to_roman(input: &String, source: &Script, destination: &Scr
         if true {
             c = chars[i];
             let s = &c.clone().to_string();
-            let (t, _pos) = identify_type(&c.to_string(), source);
-            match t.as_str() {
-                "consonants.main" => {
+            let t = identify_type(&c.to_string(), source);
+            match t {
+                CharType::ConsonantsMain => {
                     // If there is a next character
                     if i < len - 1 {
-                        match identify_type(&chars[i + 1].to_string(), source).0.as_str() {
+                        match identify_type(&chars[i + 1].to_string(), source) {
                             // If the next character is a virama or vowelsign or symbol or it is a vowel
-                            "vowelsigns.virama" | "vowelsigns.main" | "others.symbols"
-                            | "numerals" | "vowels.main" => {
+                            CharType::VowelSignsVirama
+                            | CharType::VowelSignsMain
+                            | CharType::OthersSymbols
+                            | CharType::Numerals
+                            | CharType::VowelsMain => {
                                 output.push_str(hash_map_consonants_main.get(s.as_str()).unwrap());
                             }
                             // Otherwise add the schwa also to the character
@@ -44,34 +47,34 @@ pub fn convert_indic_to_roman(input: &String, source: &Script, destination: &Scr
                         output.push_str(hash_map_consonants_main.get(s.as_str()).unwrap());
                     }
                 }
-                "vowels.main" => {
+                CharType::VowelsMain => {
                     output.push_str(hash_map_vowels_main.get(s.as_str()).unwrap());
                 }
-                "vowelsigns.main" => {
+                CharType::VowelSignsMain => {
                     output.push_str(hash_map_vowelsigns_main.get(s.as_str()).unwrap());
                 }
-                "vowelsigns.virama" => {
+                CharType::VowelSignsVirama => {
                     output.push_str(hash_map_vowelsigns_virama.get(s.as_str()).unwrap());
                 }
-                "others.symbols" => {
+                CharType::OthersSymbols => {
                     output.push_str(hash_map_others_symbols.get(s.as_str()).unwrap());
                 }
-                "others.aytham" => {
+                CharType::OthersAytham => {
                     output.push_str(hash_map_others_aytham.get(s.as_str()).unwrap());
                 }
-                "combiningsigns.ayogavaha" => {
+                CharType::CombiningSignsAyogavaha => {
                     output.push_str(hash_map_combiningsigns_ayogavaha.get(s.as_str()).unwrap());
                 }
-                "space" => {
+                CharType::Space => {
                     output.push_str(" ");
                 }
-                "new-line" => {
+                CharType::NewLine => {
                     output.push_str("\n");
                 }
-                "numerals" => {
+                CharType::Numerals => {
                     output.push_str(hash_map_numerals.get(s.as_str()).unwrap());
                 }
-                _ => {}
+                CharType::CouldNotIdentify => {}
             };
         }
     }
@@ -105,12 +108,12 @@ pub fn convert_roman_to_roman(input: &String, source: &Script, destination: &Scr
         let s = &mut String::new();
         let foo = &mut String::new();
         {
-            let (t, _pos): (String, usize);
+            let t: CharType;
 
             if i < len - 1 {
                 foo.push_str(&chars[i].to_string());
                 foo.push_str(&chars[i + 1].to_string());
-                if identify_type(foo, source).0 == "could.not.identify" {
+                if identify_type(foo, source) == CharType::CouldNotIdentify {
                     // println!("false| {:?}", foo);
                     s.push_str(&chars[i].to_string());
                 } else {
@@ -122,37 +125,39 @@ pub fn convert_roman_to_roman(input: &String, source: &Script, destination: &Scr
             } else {
                 s.push_str(&chars[i].to_string());
             }
-            (t, _pos) = identify_type(s, source);
-            if skip {println!("{:?}", t);}
-            match t.as_str() {
-                "consonants.main" => {
+            t = identify_type(s, source);
+            if skip {
+                println!("{:?}", t);
+            }
+            match t {
+                CharType::ConsonantsMain => {
                     output.push_str(hash_map_consonants_main.get(s.as_str()).unwrap());
                 }
-                "vowels.main" => {
+                CharType::VowelsMain => {
                     output.push_str(hash_map_vowels_main.get(s.as_str()).unwrap());
                 }
-                "vowelsigns.main" => {
+                CharType::VowelSignsMain => {
                     output.push_str(hash_map_vowelsigns_main.get(s.as_str()).unwrap());
                 }
-                "vowelsigns.virama" => {
+                CharType::VowelSignsVirama => {
                     output.push_str(hash_map_vowelsigns_virama.get(s.as_str()).unwrap());
                 }
-                "others.symbols" => {
+                CharType::OthersSymbols => {
                     output.push_str(hash_map_others_symbols.get(s.as_str()).unwrap());
                 }
-                "others.aytham" => {
+                CharType::OthersAytham => {
                     output.push_str(hash_map_others_aytham.get(s.as_str()).unwrap());
                 }
-                "combiningsigns.ayogavaha" => {
+                CharType::CombiningSignsAyogavaha => {
                     output.push_str(hash_map_combiningsigns_ayogavaha.get(s.as_str()).unwrap());
                 }
-                "space" => {
+                CharType::Space => {
                     output.push_str(" ");
                 }
-                "new-line" => {
+                CharType::NewLine => {
                     output.push_str("\n");
                 }
-                "numerals" => {
+                CharType::Numerals => {
                     output.push_str(hash_map_numerals.get(s.as_str()).unwrap());
                 }
                 _ => {}
@@ -183,15 +188,18 @@ pub fn convert_roman_to_indic(input: &String, source: &Script, destination: &Scr
         if true {
             c = chars[i];
             let s = &c.clone().to_string();
-            let (t, _pos) = identify_type(&c.to_string(), source);
-            match t.as_str() {
-                "consonants.main" => {
+            let t = identify_type(&c.to_string(), source);
+            match t {
+                CharType::ConsonantsMain => {
                     // check if the next character in input is also a character
                     // if so, push a virama also
                     output.push_str(hash_map_consonants_main.get(s.as_str()).unwrap());
                     if i < len - 1 {
-                        match identify_type(&chars[i + 1].to_string(), source).0.as_str() {
-                            "consonants.main" | "space" | "new-line" | "numerals" => {
+                        match identify_type(&chars[i + 1].to_string(), source) {
+                            CharType::ConsonantsMain
+                            | CharType::Space
+                            | CharType::NewLine
+                            | CharType::Numerals => {
                                 output.push_str(destination.vowelsigns.virama[0].as_str());
                             }
                             _ => {
@@ -200,14 +208,14 @@ pub fn convert_roman_to_indic(input: &String, source: &Script, destination: &Scr
                         }
                     }
                 }
-                "vowelsigns.main" | "vowels.main" => {
+                CharType::VowelSignsMain | CharType::VowelsMain => {
                     // println!("reached here");
                     // Check if the previous character in input was a consonant
                     // If so push a vowelsigns.main
                     // else push vowels.main
                     if i > 0 {
-                        match identify_type(&chars[i - 1].to_string(), source).0.as_str() {
-                            "consonants.main" => {
+                        match identify_type(&chars[i - 1].to_string(), source) {
+                            CharType::ConsonantsMain => {
                                 if let Some(_) = hash_map_vowelsigns_main.get(s.as_str()) {
                                     output.push_str(
                                         hash_map_vowelsigns_main.get(s.as_str()).unwrap(),
@@ -228,25 +236,25 @@ pub fn convert_roman_to_indic(input: &String, source: &Script, destination: &Scr
                         output.push_str(hash_map_vowels_main.get(s.as_str()).unwrap());
                     }
                 }
-                "vowelsigns.virama" => {
+                CharType::VowelSignsVirama => {
                     output.push_str(hash_map_vowelsigns_virama.get(s.as_str()).unwrap());
                 }
-                "others.symbols" => {
+                CharType::OthersSymbols => {
                     output.push_str(hash_map_others_symbols.get(s.as_str()).unwrap());
                 }
-                "others.aytham" => {
+                CharType::OthersAytham => {
                     output.push_str(hash_map_others_aytham.get(s.as_str()).unwrap());
                 }
-                "combiningsigns.ayogavaha" => {
+                CharType::CombiningSignsAyogavaha => {
                     output.push_str(hash_map_combiningsigns_ayogavaha.get(s.as_str()).unwrap());
                 }
-                "space" => {
+                CharType::Space => {
                     output.push_str(" ");
                 }
-                "new-line" => {
+                CharType::NewLine => {
                     output.push_str("\n");
                 }
-                "numerals" => {
+                CharType::Numerals => {
                     output.push_str(hash_map_numerals.get(s.as_str()).unwrap());
                 }
                 _ => {}

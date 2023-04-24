@@ -5,8 +5,8 @@ use transliterate_ferris::read_mappings;
 fn main() {
     let foo = &HASH_MAP;
 
-    let mut source = foo.get("devanagari").unwrap();
-    let mut destination = foo.get("slp1").unwrap();
+    let source = foo.get("devanagari").unwrap();
+    let destination = foo.get("slp1").unwrap();
 
     let input = "अस्त्य् उत्तरस्यां दिशि देवतात्मा हिमालयो नाम नगाधिराजः ।
     पूर्वापरौ तोयनिधी विगाह्य स्थितः पृथिव्या इव मानदण्डः ।।
