@@ -92,59 +92,52 @@ pub fn make_hash_map<'a>(
     t: usize,
 ) -> HashMap<&'a str, &'a str> {
     let mut hash_map: HashMap<&str, &str> = HashMap::new();
-    let mut v = Vec::new();
+    // let mut v = Vec::new();
     match t {
-        0 => {
-            v = vec![
-                (&source.consonants.main, &destination.consonants.main),
-                (&source.vowels.main, &destination.vowels.main),
-                (&source.vowelsigns.main, &destination.vowelsigns.main),
-                (&source.vowelsigns.virama, &destination.vowelsigns.virama),
-                (&source.numerals, &destination.numerals),
-                (&source.others.aytham, &destination.others.aytham),
-                (&source.others.symbols, &destination.others.symbols),
-                (
-                    &source.combiningsigns.ayogavaha,
-                    &destination.combiningsigns.ayogavaha,
-                ),
-            ];
-        }
+        // 0 => {
+        //     hash_map =  source.consonants.main.iter().zip(destination.consonants.main.iter()).map(|(s, d)| (s.as_str(), d.as_str())).collect();
+        //     hash_map.extend(source.vowels.main.iter().zip(destination.vowels.main.iter()).map(|(s, d)| (s.as_str(), d.as_str())).collect());
+        //     hash_map.extend(source.vowels.main.iter().zip(destination.vowels.main.iter()).map(|(s, d)| (s.as_str(), d.as_str())).collect());
+        //     hash_map.extend(source.vowels.main.iter().zip(destination.vowels.main.iter()).map(|(s, d)| (s.as_str(), d.as_str())).collect());
+        //     hash_map.extend(source.vowels.main.iter().zip(destination.vowels.main.iter()).map(|(s, d)| (s.as_str(), d.as_str())).collect());
+        //     hash_map.extend(source.vowels.main.iter().zip(destination.vowels.main.iter()).map(|(s, d)| (s.as_str(), d.as_str())).collect());
+        //     hash_map.extend(source.vowels.main.iter().zip(destination.vowels.main.iter()).map(|(s, d)| (s.as_str(), d.as_str())).collect());
+        //     hash_map.extend(source.vowels.main.iter().zip(destination.vowels.main.iter()).map(|(s, d)| (s.as_str(), d.as_str())).collect());
+        // }
         1 => {
-            v = vec![(&source.consonants.main, &destination.consonants.main)];
+            // v = vec![(&source.consonants.main, &destination.consonants.main)];
+            hash_map =  source.consonants.main.iter().zip(destination.consonants.main.iter()).map(|(s, d)| (s.as_str(), d.as_str())).collect();
         }
         2 => {
-            v = vec![(&source.vowels.main, &destination.vowels.main)];
+            hash_map =  source.vowels.main.iter().zip(destination.vowels.main.iter()).map(|(s, d)| (s.as_str(), d.as_str())).collect();
         }
         3 => {
-            v = vec![(&source.vowelsigns.main, &destination.vowelsigns.main)];
+            hash_map =  source.vowelsigns.main.iter().zip(destination.vowelsigns.main.iter()).map(|(s, d)| (s.as_str(), d.as_str())).collect();
         }
         4 => {
-            v = vec![(&source.vowelsigns.virama, &destination.vowelsigns.virama)];
+            hash_map =  source.vowelsigns.virama.iter().zip(destination.vowelsigns.virama.iter()).map(|(s, d)| (s.as_str(), d.as_str())).collect();
         }
         5 => {
-            v = vec![(&source.numerals, &destination.numerals)];
+            hash_map =  source.numerals.iter().zip(destination.numerals.iter()).map(|(s, d)| (s.as_str(), d.as_str())).collect();
         }
         6 => {
-            v = vec![(&source.others.aytham, &destination.others.aytham)];
+            hash_map =  source.others.aytham.iter().zip(destination.others.aytham.iter()).map(|(s, d)| (s.as_str(), d.as_str())).collect();
         }
         7 => {
-            v = vec![(
-                &source.combiningsigns.ayogavaha,
-                &destination.combiningsigns.ayogavaha,
-            )];
+            hash_map =  source.combiningsigns.ayogavaha.iter().zip(destination.combiningsigns.ayogavaha.iter()).map(|(s, d)| (s.as_str(), d.as_str())).collect();
         }
         8 => {
-            v = vec![(&source.others.symbols, &destination.others.symbols)];
+            hash_map =  source.others.symbols.iter().zip(destination.others.symbols.iter()).map(|(s, d)| (s.as_str(), d.as_str())).collect();
         }
         _ => {}
     }
-    for (s, d) in v {
-        hash_map.extend(
-            s.iter()
-                .zip(d.iter())
-                .map(|(k, v)| (k.as_str(), v.as_str())),
-        );
-    }
+    // for (s, d) in v {
+    //     hash_map.extend(
+    //         s.iter()
+    //             .zip(d.iter())
+    //             .map(|(k, v)| (k.as_str(), v.as_str())),
+    //     );
+    // }
 
     return hash_map;
 }

@@ -1,3 +1,4 @@
+<<<<<<< Updated upstream
 // use crate::read_mappings::read_mappings;
 
 // use crate::read_mappings::ScriptData;
@@ -5,6 +6,10 @@ mod convert;
 mod data;
 mod functions;
 mod read_mappings;
+=======
+use transliterate_ferris::convert::convert_indic_to_roman;
+use transliterate_ferris::data::HASH_MAP;
+>>>>>>> Stashed changes
 
 fn main() {
     let foo = &data::HASH_MAP;
