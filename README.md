@@ -63,5 +63,11 @@ Many more transliterations between scripts not mentioned here can be achieved in
 | iast       | slp1            | convert_roman_to_roman() |
 | iast       | itrans          | convert_roman_to_roman() |
 | iast       | hk              | convert_roman_to_roman() |
+| devanagari | telugu          | convert_roman_to_roman() |
+| telugu     | devanagari      | convert_roman_to_roman() |
+| devanagari | kannada         | convert_roman_to_roman() |
+| kannada    | devanagari      | convert_roman_to_roman() |
+| kannada    | telugu          | convert_roman_to_roman() |
+| telugu     | kannada         | convert_roman_to_roman() |
 
 Primary Focus was transliterating between devanagari to slp1 as many programs require input in slp1 and rust has no transliteration library from devanagari -> slp1 yet. It turned out making the convert_roman_to_indic() and convert_roman_to_roman() was not much different from this so I did that too.
