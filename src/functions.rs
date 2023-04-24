@@ -17,25 +17,25 @@ pub enum CharType {
 }
 
 pub fn identify_type(c: &str, data: &Script) -> CharType {
-    if data.consonants.main.contains(&c.to_string().to_string()) {
+    if data.consonants.main.contains(&c.to_string()) {
         return CharType::ConsonantsMain;
     } else if data
         .combiningsigns
         .ayogavaha
-        .contains(&c.to_string().to_string())
+        .contains(&c.to_string())
     {
         return CharType::CombiningSignsAyogavaha;
-    } else if data.vowels.main.contains(&c.to_string().to_string()) {
+    } else if data.vowels.main.contains(&c.to_string()) {
         return CharType::VowelsMain;
-    } else if data.vowelsigns.main.contains(&c.to_string().to_string()) {
+    } else if data.vowelsigns.main.contains(&c.to_string()) {
         return CharType::VowelSignsMain;
-    } else if data.vowelsigns.virama.contains(&c.to_string().to_string()) {
+    } else if data.vowelsigns.virama.contains(&c.to_string()) {
         return CharType::VowelSignsVirama;
-    } else if data.numerals.contains(&c.to_string().to_string()) {
+    } else if data.numerals.contains(&c.to_string()) {
         return CharType::Numerals;
-    } else if data.others.symbols.contains(&c.to_string().to_string()) {
+    } else if data.others.symbols.contains(&c.to_string()) {
         return CharType::OthersSymbols;
-    } else if data.others.aytham.contains(&c.to_string().to_string()) {
+    } else if data.others.aytham.contains(&c.to_string()) {
         return CharType::OthersAytham;
     } else if c == " " {
         return CharType::Space;

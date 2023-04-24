@@ -6,7 +6,7 @@ fn main() {
     let foo = &HASH_MAP;
 
     let source = foo.get("devanagari").unwrap();
-    let destination = foo.get("slp1").unwrap();
+    let destination = foo.get("iast").unwrap();
 
     let input = "अस्त्य् उत्तरस्यां दिशि देवतात्मा हिमालयो नाम नगाधिराजः ।
     पूर्वापरौ तोयनिधी विगाह्य स्थितः पृथिव्या इव मानदण्डः ।।
@@ -127,8 +127,7 @@ fn main() {
     प्रत्यर्थिभूताम् अपि तां समाधेः शुश्रूषमाणां गिरिशो ऽनुमेने ।
     विकारहेतौ सति विक्रियन्ते येषां न चेतांसि त एव धीराः ।।
     अवचितबलिपुष्पा वेदिसंमार्गदक्षा नियमविधिजलानां बर्हिषां चोपनेत्री ।
-    गिरिशम् उपचचार प्रत्यहं सा सुकेशी नियमितपरिखेदा तच्छिरश्चन्द्रपादैः ।।"
-        .to_string();
-    let converted = convert_indic_to_roman(&input, source, destination);
+    गिरिशम् उपचचार प्रत्यहं सा सुकेशी नियमितपरिखेदा तच्छिरश्चन्द्रपादैः ।।";
+    let converted = convert_indic_to_roman(input, source, destination);
     println!("{}", converted);
 }

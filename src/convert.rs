@@ -1,7 +1,7 @@
 use crate::functions::{identify_type, make_hash_map, CharType};
 use crate::read_mappings::Script;
 
-pub fn convert_indic_to_roman(input: &String, source: &Script, destination: &Script) -> String {
+pub fn convert_indic_to_roman(input: &str, source: &Script, destination: &Script) -> String {
     // Make a hashmap from source characters to corresponding destination ones
     // Since all we need now is the consonants, numerals, vowels, vowelsigns, others, we will make only for them for now.
 
@@ -82,7 +82,7 @@ pub fn convert_indic_to_roman(input: &String, source: &Script, destination: &Scr
     output.replace("×", "")
 }
 
-pub fn convert_roman_to_roman(input: &String, source: &Script, destination: &Script) -> String {
+pub fn convert_roman_to_roman(input: &str, source: &Script, destination: &Script) -> String {
     // Make a hashmap from source characters to corresponding destination ones
     // Since all we need now is the consonants, numerals, vowels, vowelsigns, others, we will make only for them for now.
     let hash_map_consonants_main = make_hash_map(source, destination, 1);
@@ -167,7 +167,7 @@ pub fn convert_roman_to_roman(input: &String, source: &Script, destination: &Scr
     output
 }
 
-pub fn convert_roman_to_indic(input: &String, source: &Script, destination: &Script) -> String {
+pub fn convert_roman_to_indic(input: &str, source: &Script, destination: &Script) -> String {
     // Make a hashmap from source characters to corresponding destination ones
     // Since all we need now is the consonants, numerals, vowels, vowelsigns, others, we will make only for them for now.
 
