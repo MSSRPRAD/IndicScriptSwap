@@ -16,26 +16,32 @@ pub enum CharType {
     CouldNotIdentify,
 }
 
-pub fn identify_type(c: &str, data: &Script) -> CharType {
-    if data.consonants.main.contains(&c.to_string()) {
+pub fn identify_type(
+    c: &str,
+    hash_map_consonants_main: &HashMap<&str, &str>,
+    hash_map_vowels_main: &HashMap<&str, &str>,
+    hash_map_vowelsigns_main: &HashMap<&str, &str>,
+    hash_map_vowelsigns_virama: &HashMap<&str, &str>,
+    hash_map_numerals: &HashMap<&str, &str>,
+    hash_map_others_aytham: &HashMap<&str, &str>,
+    hash_map_combining_signs_ayogavaha: &HashMap<&str, &str>,
+    hash_map_others_symbols: &HashMap<&str, &str>,
+) -> CharType {
+    if hash_map_consonants_main.contains_key(&*c.to_string()) {
         return CharType::ConsonantsMain;
-    } else if data
-        .combiningsigns
-        .ayogavaha
-        .contains(&c.to_string())
-    {
+    } else if hash_map_combining_signs_ayogavaha.contains_key(&*c.to_string()) {
         return CharType::CombiningSignsAyogavaha;
-    } else if data.vowels.main.contains(&c.to_string()) {
+    } else if hash_map_vowels_main.contains_key(&*c.to_string()) {
         return CharType::VowelsMain;
-    } else if data.vowelsigns.main.contains(&c.to_string()) {
+    } else if hash_map_vowelsigns_main.contains_key(&*c.to_string()) {
         return CharType::VowelSignsMain;
-    } else if data.vowelsigns.virama.contains(&c.to_string()) {
+    } else if hash_map_vowelsigns_virama.contains_key(&*c.to_string()) {
         return CharType::VowelSignsVirama;
-    } else if data.numerals.contains(&c.to_string()) {
+    } else if hash_map_numerals.contains_key(&*c.to_string()) {
         return CharType::Numerals;
-    } else if data.others.symbols.contains(&c.to_string()) {
+    } else if hash_map_others_symbols.contains_key(&*c.to_string()) {
         return CharType::OthersSymbols;
-    } else if data.others.aytham.contains(&c.to_string()) {
+    } else if hash_map_others_aytham.contains_key(&*c.to_string()) {
         return CharType::OthersAytham;
     } else if c == " " {
         return CharType::Space;

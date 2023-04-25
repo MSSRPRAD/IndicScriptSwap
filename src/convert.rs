@@ -5,7 +5,7 @@ pub fn convert_indic_to_roman(input: &str, source: &Script, destination: &Script
     // Make a hashmap from source characters to corresponding destination ones
     // Since all we need now is the consonants, numerals, vowels, vowelsigns, others, we will make only for them for now.
 
-    let _hash_map = make_hash_map(source, destination, 0);
+    // let _hash_map = make_hash_map(source, destination, 0);
     let hash_map_consonants_main = make_hash_map(source, destination, 1);
     let hash_map_vowels_main = make_hash_map(source, destination, 2);
     let hash_map_vowelsigns_main = make_hash_map(source, destination, 3);
@@ -23,12 +23,32 @@ pub fn convert_indic_to_roman(input: &str, source: &Script, destination: &Script
         if true {
             c = chars[i];
             let s = &c.clone().to_string();
-            let t = identify_type(&c.to_string(), source);
+            let t = identify_type(
+                &c.to_string(),
+                &hash_map_consonants_main,
+                &hash_map_vowels_main,
+                &hash_map_vowelsigns_main,
+                &hash_map_vowelsigns_virama,
+                &hash_map_numerals,
+                &hash_map_others_aytham,
+                &hash_map_combiningsigns_ayogavaha,
+                &hash_map_others_symbols,
+            );
             match t {
                 CharType::ConsonantsMain => {
                     // If there is a next character
                     if i < len - 1 {
-                        match identify_type(&chars[i + 1].to_string(), source) {
+                        match identify_type(
+                            &chars[i + 1].to_string(),
+                            &hash_map_consonants_main,
+                            &hash_map_vowels_main,
+                            &hash_map_vowelsigns_main,
+                            &hash_map_vowelsigns_virama,
+                            &hash_map_numerals,
+                            &hash_map_others_aytham,
+                            &hash_map_combiningsigns_ayogavaha,
+                            &hash_map_others_symbols,
+                        ) {
                             // If the next character is a virama or vowelsign or symbol or it is a vowel
                             CharType::VowelSignsVirama
                             | CharType::VowelSignsMain
@@ -113,7 +133,18 @@ pub fn convert_roman_to_roman(input: &str, source: &Script, destination: &Script
             if i < len - 1 {
                 foo.push_str(&chars[i].to_string());
                 foo.push_str(&chars[i + 1].to_string());
-                if identify_type(foo, source) == CharType::CouldNotIdentify {
+                if identify_type(
+                    foo,
+                    &hash_map_consonants_main,
+                    &hash_map_vowels_main,
+                    &hash_map_vowelsigns_main,
+                    &hash_map_vowelsigns_virama,
+                    &hash_map_numerals,
+                    &hash_map_others_aytham,
+                    &hash_map_combiningsigns_ayogavaha,
+                    &hash_map_others_symbols,
+                ) == CharType::CouldNotIdentify
+                {
                     // println!("false| {:?}", foo);
                     s.push_str(&chars[i].to_string());
                 } else {
@@ -125,7 +156,17 @@ pub fn convert_roman_to_roman(input: &str, source: &Script, destination: &Script
             } else {
                 s.push_str(&chars[i].to_string());
             }
-            t = identify_type(s, source);
+            t = identify_type(
+                s,
+                &hash_map_consonants_main,
+                &hash_map_vowels_main,
+                &hash_map_vowelsigns_main,
+                &hash_map_vowelsigns_virama,
+                &hash_map_numerals,
+                &hash_map_others_aytham,
+                &hash_map_combiningsigns_ayogavaha,
+                &hash_map_others_symbols,
+            );
             if skip {
                 println!("{:?}", t);
             }
@@ -188,14 +229,34 @@ pub fn convert_roman_to_indic(input: &str, source: &Script, destination: &Script
         if true {
             c = chars[i];
             let s = &c.clone().to_string();
-            let t = identify_type(&c.to_string(), source);
+            let t = identify_type(
+                &c.to_string(),
+                &hash_map_consonants_main,
+                &hash_map_vowels_main,
+                &hash_map_vowelsigns_main,
+                &hash_map_vowelsigns_virama,
+                &hash_map_numerals,
+                &hash_map_others_aytham,
+                &hash_map_combiningsigns_ayogavaha,
+                &hash_map_others_symbols,
+            );
             match t {
                 CharType::ConsonantsMain => {
                     // check if the next character in input is also a character
                     // if so, push a virama also
                     output.push_str(hash_map_consonants_main.get(s.as_str()).unwrap());
                     if i < len - 1 {
-                        match identify_type(&chars[i + 1].to_string(), source) {
+                        match identify_type(
+                            &chars[i + 1].to_string(),
+                            &hash_map_consonants_main,
+                            &hash_map_vowels_main,
+                            &hash_map_vowelsigns_main,
+                            &hash_map_vowelsigns_virama,
+                            &hash_map_numerals,
+                            &hash_map_others_aytham,
+                            &hash_map_combiningsigns_ayogavaha,
+                            &hash_map_others_symbols,
+                        ) {
                             CharType::ConsonantsMain
                             | CharType::Space
                             | CharType::NewLine
@@ -214,7 +275,17 @@ pub fn convert_roman_to_indic(input: &str, source: &Script, destination: &Script
                     // If so push a vowelsigns.main
                     // else push vowels.main
                     if i > 0 {
-                        match identify_type(&chars[i - 1].to_string(), source) {
+                        match identify_type(
+                            &chars[i - 1].to_string(),
+                            &hash_map_consonants_main,
+                            &hash_map_vowels_main,
+                            &hash_map_vowelsigns_main,
+                            &hash_map_vowelsigns_virama,
+                            &hash_map_numerals,
+                            &hash_map_others_aytham,
+                            &hash_map_combiningsigns_ayogavaha,
+                            &hash_map_others_symbols,
+                        ) {
                             CharType::ConsonantsMain => {
                                 if let Some(_) = hash_map_vowelsigns_main.get(s.as_str()) {
                                     output.push_str(
