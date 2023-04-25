@@ -1,13 +1,21 @@
 [package]
 name = "IndicScriptSwap"
-version = "0.1.0"
+version = "0.5.0"
 edition = "2021"
+description = "This is a tool to help transliterate between various indic scripts. It is not ready yet and has many issues. If you encounter any issues, please contact me (https://github.com/mssrprad/transliterator-ferris or pradyumna.malladi2003@gmail.com)"
+license = "MIT"
+license-file = "LICENSE"
+homepage = "https://github.com/mssrprad/transliterator-ferris"
+repository = "https://github.com/myusername/mycrate"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+ #![doc(html_root_url = "https://docs.rs/IndicScriptSwap/0.5.0")]
 
 [profile.release]
 debug = 1
 incremental = true
+opt-level = 3
 
 [dependencies]
 clap = { version = "4.2.4", features = ["derive"] }
@@ -21,3 +29,7 @@ path = "src/lib.rs"
 [[bin]]
 name = "IndicScriptSwap"
 path = "src/main.rs"
+
+
+[badges.maintenance]
+status = "actively-developed"
