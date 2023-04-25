@@ -1,4 +1,7 @@
 # transliterate-ferris
+***Rust Library to transliterate between scripts.***
+
+## See CLI Branch for cli-application
 
 INSTALLATION:
 
@@ -11,7 +14,7 @@ USAGE:
 Note: Piping is also supported for input and output:
 `cat data.txt | IndicScriptSwap --source devanagari --destination telugu --conversion i2i`
 
-***Rust Library to transliterate between scripts.***
+
 
 ## Issues
 
