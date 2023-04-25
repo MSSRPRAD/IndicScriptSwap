@@ -1,7 +1,15 @@
 # transliterate-ferris
 
 INSTALLATION:
+
 `cargo install IndicScriptSwap`
+
+USAGE:
+
+`IndicScriptSwap --source devanagari --destination telugu --conversion i2i --input data.txt --output out.txt`
+
+Note: Piping is also supported for input and output:
+`cat data.txt | IndicScriptSwap --source devanagari --destination telugu --conversion i2i`
 
 ***Rust Library to transliterate between scripts.***
 
