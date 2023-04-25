@@ -1,5 +1,5 @@
 [package]
-name = "transliterate-ferris"
+name = "IndicScriptSwap"
 version = "0.1.0"
 edition = "2021"
 
@@ -15,9 +15,9 @@ lazy_static = "1.4.0"
 maplit = "1" 
 
 [lib]
-name = "transliterate_ferris"
+name = "IndicScriptSwap"
 path = "src/lib.rs"
 
 [[bin]]
-name = "transliterate_ferris"
+name = "IndicScriptSwap"
 path = "src/main.rs"

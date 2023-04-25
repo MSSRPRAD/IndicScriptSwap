@@ -1,7 +1,7 @@
-use transliterate_ferris::convert::{
+use IndicScriptSwap::convert::{
     convert_indic_to_indic, convert_indic_to_roman, convert_roman_to_indic, convert_roman_to_roman,
 };
-use transliterate_ferris::data::HASH_MAP;
+use IndicScriptSwap::data::HASH_MAP;
 use clap::Parser;
 use std::fs::File;
 use std::io::prelude::*;
