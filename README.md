@@ -1,5 +1,8 @@
 # transliterate-ferris
 
+INSTALLATION:
+`cargo install IndicScriptSwap`
+
 ***Rust Library to transliterate between scripts.***
 
 ## Issues
