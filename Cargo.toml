@@ -2,11 +2,11 @@
 name = "IndicScriptSwap"
 version = "0.5.0"
 edition = "2021"
-description = "This is a tool to help transliterate between various indic scripts. It is not ready yet and has many issues. If you encounter any issues, please contact me (https://github.com/mssrprad/transliterator-ferris or pradyumna.malladi2003@gmail.com)"
+description = "This is a tool to help transliterate between various indic scripts. It is not ready yet and has many issues. If you encounter any issues, please contact me (https://github.com/mssrprad/transliterate-ferris/tree/cli or pradyumna.malladi2003@gmail.com)"
 license = "MIT"
 license-file = "LICENSE"
-homepage = "https://github.com/mssrprad/transliterator-ferris"
-repository = "https://github.com/myusername/mycrate"
+homepage = "https://github.com/mssrprad/transliterate-ferris/tree/cli"
+repository = "https://github.com/mssrprad/transliterate-ferris/tree/cli"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
