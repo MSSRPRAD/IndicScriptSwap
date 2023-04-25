@@ -10,6 +10,7 @@ debug = 1
 incremental = true
 
 [dependencies]
+clap = { version = "4.2.4", features = ["derive"] }
 lazy_static = "1.4.0"
 maplit = "1" 
 

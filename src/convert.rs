@@ -102,6 +102,10 @@ pub fn convert_indic_to_roman(input: &str, source: &Script, destination: &Script
     output.replace("×", "")
 }
 
+pub fn convert_indic_to_indic(input: &str, source: &Script, destination: &Script) -> String {
+    return convert_roman_to_roman(input, source, destination);
+}
+
 pub fn convert_roman_to_roman(input: &str, source: &Script, destination: &Script) -> String {
     // Make a hashmap from source characters to corresponding destination ones
     // Since all we need now is the consonants, numerals, vowels, vowelsigns, others, we will make only for them for now.
