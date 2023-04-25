@@ -1,7 +1,5 @@
 use transliterate_ferris::convert::convert_indic_to_roman;
 use transliterate_ferris::data::HASH_MAP;
-use transliterate_ferris::read_mappings;
-
 fn main() {
     let foo = &HASH_MAP;
 
