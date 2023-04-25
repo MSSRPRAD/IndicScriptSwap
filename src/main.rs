@@ -5,6 +5,7 @@ use transliterate_ferris::data::HASH_MAP;
 use clap::Parser;
 use std::fs::File;
 use std::io::prelude::*;
+use std::io::{self, BufRead, BufReader};
 
 const def_input: String = String::new();
 const def_output: String = String::new();
@@ -23,7 +24,7 @@ struct Args {
     #[arg(short, long)]
     destination: String,
 
-    /// Input File (With no special characters that shouldn't be transliterated)
+    /// Input File (With no special characters that shouldn't be transliterated)(Default: stdout)
     #[arg(short, long, default_value_t = def_input)]
     input: String,
 
@@ -31,7 +32,7 @@ struct Args {
     #[arg(short, long, default_value_t = def_output)]
     output: String,
 
-    /// Type of Conversion
+    /// Type of Conversion (i2i/i2r/r2r/r2i)
     #[arg(short, long)]
     conversion: String,
 
@@ -40,30 +41,36 @@ struct Args {
 
 
 fn main() -> std::io::Result<()> {
+
     let args = Args::parse();
-    let mut file = match File::open(args.input){
-        Ok(file) => file, 
-        Err(error) => return Err(error),
-    };
     let mut contents = String::new();
     let source = HASH_MAP.get(&args.source as &str).unwrap();
     let destination = HASH_MAP.get(&args.destination as &str).unwrap();
-    file.read_to_string(&mut contents)?;
     let converted: String;
+
+    let mut input: Box<dyn BufRead> = if !args.input.is_empty() {
+        Box::new(BufReader::new(File::open(args.input)?))
+    } else {
+        Box::new(BufReader::new(io::stdin()))
+    };
+
+    input.read_to_string(&mut contents)?;
+
     match args.conversion.as_str() {
-        "i2i" => {converted=convert_indic_to_indic(&contents, source, destination);},
-        "i2r" => {converted=convert_indic_to_roman(&contents, source, destination);},
-        "r2i" => {converted=convert_roman_to_indic(&contents, source, destination);},
-        "r2r" => {converted=convert_roman_to_roman(&contents, source, destination);},
-        _ => {converted=String::from("Could Not Convert!")},
+        "i2i" => converted = convert_indic_to_indic(&contents, source, destination),
+        "i2r" => converted = convert_indic_to_roman(&contents, source, destination),
+        "r2i" => converted = convert_roman_to_indic(&contents, source, destination),
+        "r2r" => converted = convert_roman_to_roman(&contents, source, destination),
+        _ => converted = String::from("Could Not Convert!"),
     }
-    if args.output.len()!=0 {
-        file = File::create(args.output)?;
-        file.write_all(converted.as_bytes());
-        Ok(())
+
+    if !args.output.is_empty() {
+        let mut file = File::create(args.output)?;
+        file.write_all(converted.as_bytes())?;
     } else {
         println!("{}", converted);
-        Ok(())
     }
+
+    Ok(())
     
 }
