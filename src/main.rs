@@ -11,7 +11,7 @@ const def_input: String = String::new();
 const def_output: String = String::new();
 
 #[derive(Parser, Debug)]
-#[clap(author="Pradyumna Malladi", version = "0.5.1", about="This is a tool to help transliterate between various indic scripts. 
+#[clap(author="Pradyumna Malladi", version = "0.5.2", about="This is a tool to help transliterate between various indic scripts. 
 It is not ready yet and has many issues.
 If you encounter any issues, please contact me (https://github.com/mssrprad/transliterator-ferris or pradyumna.malladi2003@gmail.com)")]
 struct Args {
@@ -25,7 +25,7 @@ struct Args {
     /// 2 => short
     /// Default (0) => None
     #[arg(short, long, default_value_t)]
-    details: usize,
+    more: usize,
 
     /// Destination Script
     #[arg(short, long)]
@@ -55,7 +55,7 @@ fn main() -> std::io::Result<()> {
     let destination = HASH_MAP.get(&args.destination as &str).unwrap();
     let converted: String;
 
-    match args.details {
+    match args.more {
         1 => {
             
             
