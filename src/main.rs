@@ -27,7 +27,7 @@ struct Args {
     #[arg(short, long, default_value_t = def_input)]
     input: String,
 
-    /// Output File
+    /// Output File (Default: stdout)
     #[arg(short, long, default_value_t = def_output)]
     output: String,
 
