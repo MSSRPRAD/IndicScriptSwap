@@ -8,7 +8,7 @@
    1. I thought removing the `serde` and `json` dependencies and reading from data.rs would improve the build time but it made it much much worse.
    2. The code does run a bit faster with this.
    3. rust-analyzer crashing on vs-code due to this.
-2. ~40 millisecond vs ~120 millisecond by `aksharamukha-python` on the same conversion. (Can be made even better)
+2. ~30 millisecond vs ~150 millisecond by `aksharamukha-python` on the same conversion. (Can be made even better)
 3. Too many ugly nested code blocks.
 4. No tests so changes can have unintended consequences.
 
@@ -41,7 +41,7 @@ The output generated for the above input text was:
 
 ## <b> Some conversions that that I have tested (Need to test more) :</b>
 
-Many more transliterations between scripts not mentioned here can be achieved indirectly (eg: telugu->devanagari = telugu->slp1->devanagari)
+Many more transliterations between scripts not mentioned here can be achieved. Do try them all! (See src/data.rs for the various script names)
 
 | source key | destination key | function                 |
 | ---------- | --------------- | ------------------------ |
@@ -71,3 +71,95 @@ Many more transliterations between scripts not mentioned here can be achieved in
 | telugu     | kannada         | convert_roman_to_roman() |
 
 Primary Focus was transliterating between devanagari to slp1 as many programs require input in slp1 and rust has no transliteration library from devanagari -> slp1 yet. It turned out making the convert_roman_to_indic() and convert_roman_to_roman() was not much different from this so I did that too.
+
+<copied from aksharamukha-python>
+List of Scripts that *may* be working
+IndicScripts = [
+               'RomanSemitic',
+                'Makasar',
+                'Nandinagari',
+                'Kawi',
+                'Shahmukhi',
+                'Pallava',
+                'Hebrew',
+               'LaoTham',
+               'LueTham',
+               'KhuenTham',
+               'TamilExtended',
+               'Marchen',
+               'MasaramGondi',
+               'GunjalaGondi',
+               'Soyombo',
+               'Dogra',
+               'KhomThai',
+               'KhamtiShan',
+               'TaiLaing',
+               'Mon',
+               'Khojki',
+               'Shan',
+               'Ranjana',
+               'ZanabazarSquare',
+               'Rejang',
+               'GranthaGrantamil',
+               'Devanagari',
+               'Multani',
+               'Ahom',
+               'Mahajani',
+               'Lao2',
+               'Hanunoo',
+               'Buhid',
+               'Siddham',
+               'SiddhamDevanagari',
+               'GranthaPandya',
+               'Vatteluttu',
+               'Khudawadi',
+               'Bhaiksuki',
+               'Sharada',
+               'Newa',
+               'Takri',
+               'SylotiNagri',
+               'Tirhuta',
+               'Modi',
+               'Kaithi',
+               'Kharoshthi',
+               'Telugu',
+               'Kannada',
+               'Malayalam',
+               'Gujarati',
+               'Bengali',
+               'Oriya',
+               'Gurmukhi',
+               'Tamil',
+               'Assamese',
+               'Saurashtra',
+               'TamilBrahmi',
+               'Grantha',
+               'TamilGrantha',
+               'Sinhala',
+               'Khmer',
+               'Burmese',
+               'Urdu',
+               'Balinese',
+               'Javanese',
+               'Thaana',
+               'Tibetan',
+               'Thai',
+               'OldPersian',
+               'Limbu',
+               'Lepcha',
+               'Sundanese',
+               'Tagalog',
+               'Tagbanwa',
+               'Buginese',
+               'Chakma',
+               'PhagsPa',
+               'MeeteiMayek',
+               'LaoPali',
+               'BatakKaro','BatakPakpak','BatakSima','BatakToba','BatakManda',
+               'Cham',
+               'TaiTham',
+               'Lao',
+               'Brahmi'
+               ]
+
+LatinScripts = ['IASTLOC', 'RomanColloquial', 'ISOPali', 'RomanKana', 'BarahaNorth', 'BarahaSouth', 'Mongolian', 'SLP1', 'Wancho', 'Mro', 'IASTPali', 'HanifiRohingya','Ariyaka', 'RomanReadable', 'Aksharaa', 'WarangCiti', 'SoraSompeng','WX-kok','Avestan','ISO','IAST','HK','Titus','Itrans','Velthuis','WX','Inter','IPA','TolongSiki','Santali','RussianCyrillic']
