@@ -3,6 +3,8 @@
 
 ## See CLI Branch for cli-application
 
+IMP: Don't use rust-analyzer if you're working on the code. It has crashed my pc multiple times on both vscode and nvim. I suspect the data.rs is causing this issue.
+
 INSTALLATION:
 
 `cargo install IndicScriptSwap`
