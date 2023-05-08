@@ -148,7 +148,7 @@ pub fn convert_roman_to_roman(input: &str, source: &Script, destination: &Script
                     // println!("false| {:?}", foo);
                     s.push_str(&chars[i].to_string());
                 } else {
-                    println!("true| {:?} | ", foo);
+                    // println!("true| {:?} | ", foo);
                     s.push_str(&chars[i].to_string());
                     s.push_str(&chars[i + 1].to_string());
                     skip = true;
@@ -167,9 +167,9 @@ pub fn convert_roman_to_roman(input: &str, source: &Script, destination: &Script
                 &hash_map_combiningsigns_ayogavaha,
                 &hash_map_others_symbols,
             );
-            if skip {
-                println!("{:?}", t);
-            }
+            // if skip {
+            //     println!("{:?}", t);
+            // }
             match t {
                 CharType::ConsonantsMain => {
                     output.push_str(hash_map_consonants_main.get(s.as_str()).unwrap());
