@@ -1,6 +1,78 @@
 use crate::functions::{identify_type, make_hash_map, CharType};
 use crate::read_mappings::Script;
 
+pub fn convert_indic_to_indic(input: &str, source: &Script, destination: &Script) -> String {
+    // Make a hashmap from source characters to corresponding destination ones
+    // Since all we need now is the consonants, numerals, vowels, vowelsigns, others, we will make only for them for now.
+    let hash_map_consonants_main = make_hash_map(source, destination, 1);
+    let hash_map_vowels_main = make_hash_map(source, destination, 2);
+    let hash_map_vowelsigns_main = make_hash_map(source, destination, 3);
+    let hash_map_vowelsigns_virama = make_hash_map(source, destination, 4);
+    let hash_map_numerals = make_hash_map(source, destination, 5);
+    let hash_map_others_aytham = make_hash_map(source, destination, 6);
+    let hash_map_combiningsigns_ayogavaha = make_hash_map(source, destination, 7);
+    let hash_map_others_symbols = make_hash_map(source, destination, 8);
+    // Transliterating indic to indic is very simple. We just map the current character to the
+    // corresponding destination character and it works!
+    let mut output: String = String::new();
+    let len = input.chars().count();
+    let chars: Vec<char> = input.chars().collect();
+    for i in 0..len {
+        let s = &mut String::new();
+        s.push(chars[i]);
+        {
+            let t: CharType;
+
+            t = identify_type(
+                s,
+                &hash_map_consonants_main,
+                &hash_map_vowels_main,
+                &hash_map_vowelsigns_main,
+                &hash_map_vowelsigns_virama,
+                &hash_map_numerals,
+                &hash_map_others_aytham,
+                &hash_map_combiningsigns_ayogavaha,
+                &hash_map_others_symbols,
+            );
+
+            match t {
+                CharType::ConsonantsMain => {
+                    output.push_str(hash_map_consonants_main.get(s.as_str()).unwrap());
+                }
+                CharType::VowelsMain => {
+                    output.push_str(hash_map_vowels_main.get(s.as_str()).unwrap());
+                }
+                CharType::VowelSignsMain => {
+                    output.push_str(hash_map_vowelsigns_main.get(s.as_str()).unwrap());
+                }
+                CharType::VowelSignsVirama => {
+                    output.push_str(hash_map_vowelsigns_virama.get(s.as_str()).unwrap());
+                }
+                CharType::OthersSymbols => {
+                    output.push_str(hash_map_others_symbols.get(s.as_str()).unwrap());
+                }
+                CharType::OthersAytham => {
+                    output.push_str(hash_map_others_aytham.get(s.as_str()).unwrap());
+                }
+                CharType::CombiningSignsAyogavaha => {
+                    output.push_str(hash_map_combiningsigns_ayogavaha.get(s.as_str()).unwrap());
+                }
+                CharType::Space => {
+                    output.push_str(" ");
+                }
+                CharType::NewLine => {
+                    output.push_str("\n");
+                }
+                CharType::Numerals => {
+                    output.push_str(hash_map_numerals.get(s.as_str()).unwrap());
+                }
+                _ => {}
+            };
+        }
+    }
+    output
+}
+
 pub fn convert_indic_to_roman(input: &str, source: &Script, destination: &Script) -> String {
     // Make a hashmap from source characters to corresponding destination ones
     // Since all we need now is the consonants, numerals, vowels, vowelsigns, others, we will make only for them for now.
