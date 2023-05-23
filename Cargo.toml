@@ -1,6 +1,6 @@
 [package]
 name = "IndicScriptSwap"
-version = "0.5.2"
+version = "0.6.0"
 edition = "2021"
 description = "This is a tool to help transliterate between various indic scripts. It is not ready yet and has many issues. If you encounter any issues, please contact me (https://github.com/mssrprad/transliterate-ferris/tree/cli or pradyumna.malladi2003@gmail.com)"
 license = "MIT"

@@ -11,7 +11,7 @@ const def_input: String = String::new();
 const def_output: String = String::new();
 
 #[derive(Parser, Debug)]
-#[clap(author="Pradyumna Malladi", version = "0.5.2", about="This is a tool to help transliterate between various indic scripts. 
+#[clap(author="Pradyumna Malladi", version = "0.6.0", about="This is a tool to help transliterate between various indic scripts. 
 It is not ready yet and has many issues.
 If you encounter any issues, please contact me (https://github.com/mssrprad/transliterator-ferris or pradyumna.malladi2003@gmail.com)")]
 struct Args {
