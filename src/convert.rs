@@ -228,7 +228,6 @@ pub fn convert_roman_to_indic(input: &str, source: &Script, destination: &Script
                 skip_twice = true;
                 s.push(chars[i + 1]);
                 s.push(chars[i + 2]);
-                println!("skipping for: {}", foo1);
             }
         }
         // Check for next 1 char now
@@ -249,7 +248,6 @@ pub fn convert_roman_to_indic(input: &str, source: &Script, destination: &Script
             {
                 skip = true;
                 s.push(chars[i + 1]);
-                println!("skipping for: {}", foo);
             }
         }
         let t = identify_type(
@@ -265,7 +263,7 @@ pub fn convert_roman_to_indic(input: &str, source: &Script, destination: &Script
         );
         match t {
             CharType::ConsonantsMain => {
-                println!("char was: {}", s);
+                
                 // If previous char was a consonant we push a virama before
                 match was_char {
                     true => {
@@ -280,7 +278,7 @@ pub fn convert_roman_to_indic(input: &str, source: &Script, destination: &Script
                 was_char = true;
             }
             CharType::VowelSignsMain | CharType::VowelsMain => {
-                // println!("reached here");
+                
                 // Check if the previous character in input was a consonant
                 // If so push a vowelsigns.main
                 // else push vowels.main
@@ -289,7 +287,6 @@ pub fn convert_roman_to_indic(input: &str, source: &Script, destination: &Script
                 // If input is 'a' and was_char is true, we need not push
                 // anything because 'a' is present implicitly at end of every
                 // consonant unless mentioned otherwise
-                println!("was_char: {} for : {}", was_char, output);
                 match was_char {
                     true => {
                         match s.as_str() {
@@ -468,7 +465,6 @@ pub fn convert_roman_to_roman(input: &str, source: &Script, destination: &Script
                 skip_twice = true;
                 s.push(chars[i + 1]);
                 s.push(chars[i + 2]);
-                println!("skipping for: {}", foo1);
             }
         }
         // Check for next 1 char
@@ -489,7 +485,7 @@ pub fn convert_roman_to_roman(input: &str, source: &Script, destination: &Script
             {
                 skip = true;
                 s.push(chars[i + 1]);
-                println!("skipping for: {}", foo);
+                
             }
         }
         let t = identify_type(
