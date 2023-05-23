@@ -290,17 +290,29 @@ pub fn convert_roman_to_indic(input: &str, source: &Script, destination: &Script
     let hash_map_others_aytham = make_hash_map(source, destination, 6);
     let hash_map_combiningsigns_ayogavaha = make_hash_map(source, destination, 7);
     let hash_map_others_symbols = make_hash_map(source, destination, 8);
-
+    // Conversion is a bit more complicated here. Some roman scripts have more
+    // than one character that are mapped to one indic character.
+    // So we need to check in order if the next 2/1 characters have a mapping
+    // and once a mapping is found skip the next character if it is 2
     let mut output: String = String::new();
     let len = input.chars().count();
     let chars: Vec<char> = input.chars().collect();
+    let mut skip: bool = false;
+    let mut was_char: bool = false;
     for i in 0..len {
-        let c: char;
-        if true {
-            c = chars[i];
-            let s = &c.clone().to_string();
-            let t = identify_type(
-                &c.to_string(),
+        if skip {
+            skip = false;
+            continue;
+        }
+        let s = &mut String::new();
+        let foo = &mut String::new();
+        s.push(chars[i]);
+        // If a next character exists
+        if i < len - 1 {
+            foo.push(chars[i]);
+            foo.push(chars[i+1]);
+            if identify_type(
+                foo,
                 &hash_map_consonants_main,
                 &hash_map_vowels_main,
                 &hash_map_vowelsigns_main,
@@ -309,98 +321,161 @@ pub fn convert_roman_to_indic(input: &str, source: &Script, destination: &Script
                 &hash_map_others_aytham,
                 &hash_map_combiningsigns_ayogavaha,
                 &hash_map_others_symbols,
-            );
-            match t {
-                CharType::ConsonantsMain => {
-                    // check if the next character in input is also a character
-                    // if so, push a virama also
-                    output.push_str(hash_map_consonants_main.get(s.as_str()).unwrap());
-                    if i < len - 1 {
-                        match identify_type(
-                            &chars[i + 1].to_string(),
-                            &hash_map_consonants_main,
-                            &hash_map_vowels_main,
-                            &hash_map_vowelsigns_main,
-                            &hash_map_vowelsigns_virama,
-                            &hash_map_numerals,
-                            &hash_map_others_aytham,
-                            &hash_map_combiningsigns_ayogavaha,
-                            &hash_map_others_symbols,
-                        ) {
-                            CharType::ConsonantsMain
-                            | CharType::Space
-                            | CharType::NewLine
-                            | CharType::Numerals => {
-                                output.push_str(destination.vowelsigns.virama[0].as_str());
-                            }
-                            _ => {
-                                // Do Nothing
-                            }
-                        }
-                    }
-                }
-                CharType::VowelSignsMain | CharType::VowelsMain => {
-                    // println!("reached here");
-                    // Check if the previous character in input was a consonant
-                    // If so push a vowelsigns.main
-                    // else push vowels.main
-                    if i > 0 {
-                        match identify_type(
-                            &chars[i - 1].to_string(),
-                            &hash_map_consonants_main,
-                            &hash_map_vowels_main,
-                            &hash_map_vowelsigns_main,
-                            &hash_map_vowelsigns_virama,
-                            &hash_map_numerals,
-                            &hash_map_others_aytham,
-                            &hash_map_combiningsigns_ayogavaha,
-                            &hash_map_others_symbols,
-                        ) {
-                            CharType::ConsonantsMain => {
-                                if let Some(_) = hash_map_vowelsigns_main.get(s.as_str()) {
-                                    output.push_str(
-                                        hash_map_vowelsigns_main.get(s.as_str()).unwrap(),
-                                    );
-                                } else {
-                                    if chars[i].to_string() != source.vowels.main[0] {
-                                        output.push_str(
-                                            hash_map_vowels_main.get(s.as_str()).unwrap(),
-                                        );
-                                    }
-                                }
-                            }
-                            _ => {
-                                output.push_str(hash_map_vowels_main.get(s.as_str()).unwrap());
-                            }
-                        }
-                    } else {
-                        output.push_str(hash_map_vowels_main.get(s.as_str()).unwrap());
-                    }
-                }
-                CharType::VowelSignsVirama => {
-                    output.push_str(hash_map_vowelsigns_virama.get(s.as_str()).unwrap());
-                }
-                CharType::OthersSymbols => {
-                    output.push_str(hash_map_others_symbols.get(s.as_str()).unwrap());
-                }
-                CharType::OthersAytham => {
-                    output.push_str(hash_map_others_aytham.get(s.as_str()).unwrap());
-                }
-                CharType::CombiningSignsAyogavaha => {
-                    output.push_str(hash_map_combiningsigns_ayogavaha.get(s.as_str()).unwrap());
-                }
-                CharType::Space => {
-                    output.push_str(" ");
-                }
-                CharType::NewLine => {
-                    output.push_str("\n");
-                }
-                CharType::Numerals => {
-                    output.push_str(hash_map_numerals.get(s.as_str()).unwrap());
-                }
-                _ => {}
-            };
+            ) != CharType::CouldNotIdentify {
+                skip = true;
+                s.push(chars[i+1]);
+            }
         }
+        let t = identify_type(
+            s,
+            &hash_map_consonants_main,
+            &hash_map_vowels_main,
+            &hash_map_vowelsigns_main,
+            &hash_map_vowelsigns_virama,
+            &hash_map_numerals,
+            &hash_map_others_aytham,
+            &hash_map_combiningsigns_ayogavaha,
+            &hash_map_others_symbols,
+        );
+        match t {
+            CharType::ConsonantsMain => {
+                println!("char was: {}", s);
+                // If previous char was a consonant we push a virama before 
+                match was_char {
+                    true => {
+                        output.push_str(destination.vowelsigns.virama[0].as_str());
+                    }
+                    false => {
+                        // Do Nothing
+                    }
+                }
+                // Push the corresponding output consonant
+                output.push_str(hash_map_consonants_main.get(s.as_str()).unwrap());
+                was_char = true;
+            }
+            CharType::VowelSignsMain | CharType::VowelsMain => {
+                // println!("reached here");
+                // Check if the previous character in input was a consonant
+                // If so push a vowelsigns.main
+                // else push vowels.main
+
+                // Edge case: 
+                // If input is 'a' and was_char is true, we need not push
+                // anything because 'a' is present implicitly at end of every
+                // consonant unless mentioned otherwise
+                println!("was_char: {} for : {}", was_char, output);
+                match was_char {
+                    true => {
+                        match s.as_str() {
+                            _ if s == source.vowels.main[0].as_str() => {
+                                // Do Nothing
+                            },
+                            _ => {
+                                output.push_str(hash_map_vowelsigns_main.get(s.as_str()).unwrap_or_else(|| hash_map_vowels_main.get(s.as_str()).unwrap()));
+                            },
+                        }
+                    },
+                    false => {
+                        output.push_str(hash_map_vowels_main.get(s.as_str()).unwrap_or_else(|| hash_map_vowelsigns_main.get(s.as_str()).unwrap()));
+                    },
+                }
+                was_char = false;   
+            }
+            CharType::VowelSignsVirama => {
+                output.push_str(hash_map_vowelsigns_virama.get(s.as_str()).unwrap());
+                was_char = false;
+            }
+            CharType::OthersSymbols => {
+                // If previous char was a consonant we push a virama before 
+                match was_char {
+                    true => {
+                        output.push_str(destination.vowelsigns.virama[0].as_str());
+                    }
+                    false => {
+                        // Do Nothing
+                    }
+                }
+                output.push_str(hash_map_others_symbols.get(s.as_str()).unwrap());
+                was_char = false;
+            }
+            CharType::OthersAytham => {
+                // If previous char was a consonant we push a virama before 
+                match was_char {
+                    true => {
+                        output.push_str(destination.vowelsigns.virama[0].as_str());
+                    }
+                    false => {
+                        // Do Nothing
+                    }
+                }
+                output.push_str(hash_map_others_aytham.get(s.as_str()).unwrap());
+                was_char = false;
+            }
+            CharType::CombiningSignsAyogavaha => {
+                // If previous char was a consonant we push a virama before 
+                match was_char {
+                    true => {
+                        output.push_str(destination.vowelsigns.virama[0].as_str());
+                    }
+                    false => {
+                        // Do Nothing
+                    }
+                }
+                output.push_str(hash_map_combiningsigns_ayogavaha.get(s.as_str()).unwrap());
+                was_char = false;
+            }
+            CharType::Space => {
+                // If previous char was a consonant we push a virama before 
+                match was_char {
+                    true => {
+                        output.push_str(destination.vowelsigns.virama[0].as_str());
+                    }
+                    false => {
+                        // Do Nothing
+                    }
+                }
+                output.push_str(" ");
+                was_char = false;
+            }
+            CharType::NewLine => {
+                // If previous char was a consonant we push a virama before 
+                match was_char {
+                    true => {
+                        output.push_str(destination.vowelsigns.virama[0].as_str());
+                    }
+                    false => {
+                        // Do Nothing
+                    }
+                }
+                output.push_str("\n");
+                was_char = false;
+            }
+            CharType::Numerals => {
+                // If previous char was a consonant we push a virama before 
+                match was_char {
+                    true => {
+                        output.push_str(destination.vowelsigns.virama[0].as_str());
+                    }
+                    false => {
+                        // Do Nothing
+                    }
+                }
+                output.push_str(hash_map_numerals.get(s.as_str()).unwrap());
+                was_char = false;
+            }
+            _ => {
+                // If previous char was a consonant we push a virama before 
+                match was_char {
+                    true => {
+                        output.push_str(destination.vowelsigns.virama[0].as_str());
+                    }
+                    false => {
+                        // Do Nothing
+                    }
+                }
+                was_char = false;
+            }
+        };
     }
 
     output
