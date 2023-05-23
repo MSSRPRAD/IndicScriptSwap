@@ -9,6 +9,9 @@ edition = "2021"
 debug = 1
 incremental = true
 
+[profile.dev]
+incremental = true
+
 [dependencies]
 lazy_static = "1.4.0"
 maplit = "1" 
