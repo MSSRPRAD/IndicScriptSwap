@@ -1,7 +1,7 @@
 #[cfg(test)]
 mod tests {
     use transliterate_ferris::convert::{
-        convert_indic_to_indic, convert_indic_to_roman, convert_roman_to_indic,
+        convert_indic_to_indic, convert_indic_to_roman, convert_roman_to_indic,convert_roman_to_roman
     };
     use transliterate_ferris::data::HASH_MAP;
     #[test]
@@ -118,6 +118,67 @@ mod tests {
         let telugu = foo.get("telugu").unwrap();
         let itrans = foo.get("itrans").unwrap();
         let converted = convert_roman_to_indic(input, itrans, telugu);
+        assert_eq!(expected, converted);
+    }
+    // For scripts where only one character needs to be mapped
+    // at one time
+    #[test]
+    fn test_roman_to_roman_1() {
+        let foo = &HASH_MAP;
+        let input = "tapaHsvADyAyanirataM tapasvI vAgvidAM varam .
+        nAradaM paripapracCa vAlmIkirmunipuMgavam .. 1 ..
+        ko nvasminsAmprataM loke guRavAnkaSca vIryavAn .
+        DarmajYaSca kftajYaSca satyavAkyo dfQavrataH .. 2 ..
+        cAritreRa ca ko yuktaH sarvaBUtezu ko hitaH .
+        vidvAnkaH kaH samarTaSca kaScEkapriyadarSanaH .. 3 ..
+        AtmavAnko jitakroDo dyutimAnko'nasUyakaH .
+        kasya biByati devASca jAtarozasya saMyuge .. 4 ..
+        etadicCAmyahaM SrotuM paraM kOtUhalaM hi me .
+        maharze tvaM samarTo'si jYAtumevaMviDaM naram .. 5 ..";
+        let expected = "tapaHsvAdhyAyanirataM tapasvI vAgvidAM varam .
+        nAradaM paripaprachCha vAlmIkirmunipuMgavam .. 1 ..
+        ko nvasminsAmprataM loke guNavAnkashcha vIryavAn .
+        dharmaj~nashcha kR^itaj~nashcha satyavAkyo dR^iDhavrataH .. 2 ..
+        chAritreNa cha ko yuktaH sarvabhUteShu ko hitaH .
+        vidvAnkaH kaH samarthashcha kashchaikapriyadarshanaH .. 3 ..
+        AtmavAnko jitakrodho dyutimAnko.anasUyakaH .
+        kasya bibhyati devAshcha jAtaroShasya saMyuge .. 4 ..
+        etadichChAmyahaM shrotuM paraM kautUhalaM hi me .
+        maharShe tvaM samartho.asi j~nAtumevaMvidhaM naram .. 5 ..";
+        let itrans = foo.get("itrans").unwrap();
+        let slp1 = foo.get("slp1").unwrap();
+        let converted = convert_roman_to_roman(input, slp1, itrans);
+        assert_eq!(expected, converted);
+    }
+
+    // For scripts where upto two characters need to be mapped
+    // at one time
+    #[test]
+    fn test_roman_to_roman_2() {
+        let foo = &HASH_MAP;
+        let input = "tapaHsvAdhyAyanirataM tapasvI vAgvidAM varam .
+        nAradaM paripaprachCha vAlmIkirmunipuMgavam .. 1 ..
+        ko nvasminsAmprataM loke guNavAnkashcha vIryavAn .
+        dharmaj~nashcha kR^itaj~nashcha satyavAkyo dR^iDhavrataH .. 2 ..
+        chAritreNa cha ko yuktaH sarvabhUteShu ko hitaH .
+        vidvAnkaH kaH samarthashcha kashchaikapriyadarshanaH .. 3 ..
+        AtmavAnko jitakrodho dyutimAnko.anasUyakaH .
+        kasya bibhyati devAshcha jAtaroShasya saMyuge .. 4 ..
+        etadichChAmyahaM shrotuM paraM kautUhalaM hi me .
+        maharShe tvaM samartho.asi j~nAtumevaMvidhaM naram .. 5 ..";
+        let expected = "tapaHsvADyAyanirataM tapasvI vAgvidAM varam .
+        nAradaM paripapracCa vAlmIkirmunipuMgavam .. 1 ..
+        ko nvasminsAmprataM loke guRavAnkaSca vIryavAn .
+        DarmajYaSca kftajYaSca satyavAkyo dfQavrataH .. 2 ..
+        cAritreRa ca ko yuktaH sarvaBUtezu ko hitaH .
+        vidvAnkaH kaH samarTaSca kaScEkapriyadarSanaH .. 3 ..
+        AtmavAnko jitakroDo dyutimAnko'nasUyakaH .
+        kasya biByati devASca jAtarozasya saMyuge .. 4 ..
+        etadicCAmyahaM SrotuM paraM kOtUhalaM hi me .
+        maharze tvaM samarTo'si jYAtumevaMviDaM naram .. 5 ..";
+        let slp1 = foo.get("slp1").unwrap();
+        let itrans = foo.get("itrans").unwrap();
+        let converted = convert_roman_to_roman(input, itrans, slp1);
         assert_eq!(expected, converted);
     }
 }
