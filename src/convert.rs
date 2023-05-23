@@ -292,25 +292,55 @@ pub fn convert_roman_to_indic(input: &str, source: &Script, destination: &Script
     let hash_map_others_symbols = make_hash_map(source, destination, 8);
     // Conversion is a bit more complicated here. Some roman scripts have more
     // than one character that are mapped to one indic character.
-    // So we need to check in order if the next 2/1 characters have a mapping
-    // and once a mapping is found skip the next character if it is 2
+    // So we need to check in order if the next 3/2/1 characters have a mapping
+    // and once a mapping is found skip the next 2/1 character if it is 3/2
     let mut output: String = String::new();
     let len = input.chars().count();
     let chars: Vec<char> = input.chars().collect();
     let mut skip: bool = false;
+    let mut skip_twice: bool = false;
     let mut was_char: bool = false;
     for i in 0..len {
         if skip {
             skip = false;
             continue;
         }
+        if skip_twice {
+            skip_twice = false;
+            continue;
+        }
         let s = &mut String::new();
         let foo = &mut String::new();
+        let foo1 = &mut String::new();
         s.push(chars[i]);
-        // If a next character exists
-        if i < len - 1 {
+        // If a next two characters exist
+        if i < len - 2 {
+            foo1.push(chars[i]);
+            foo1.push(chars[i + 1]);
+            foo1.push(chars[i + 2]);
+            if identify_type(
+                foo1,
+                &hash_map_consonants_main,
+                &hash_map_vowels_main,
+                &hash_map_vowelsigns_main,
+                &hash_map_vowelsigns_virama,
+                &hash_map_numerals,
+                &hash_map_others_aytham,
+                &hash_map_combiningsigns_ayogavaha,
+                &hash_map_others_symbols,
+            ) != CharType::CouldNotIdentify
+            {
+                skip = true;
+                skip_twice = true;
+                s.push(chars[i + 1]);
+                s.push(chars[i + 2]);
+                println!("skipping for: {}", foo1);
+            }
+        }
+        // Check for next 1 char now
+        if !skip_twice && i < len - 1 {
             foo.push(chars[i]);
-            foo.push(chars[i+1]);
+            foo.push(chars[i + 1]);
             if identify_type(
                 foo,
                 &hash_map_consonants_main,
@@ -321,9 +351,11 @@ pub fn convert_roman_to_indic(input: &str, source: &Script, destination: &Script
                 &hash_map_others_aytham,
                 &hash_map_combiningsigns_ayogavaha,
                 &hash_map_others_symbols,
-            ) != CharType::CouldNotIdentify {
+            ) != CharType::CouldNotIdentify
+            {
                 skip = true;
-                s.push(chars[i+1]);
+                s.push(chars[i + 1]);
+                println!("skipping for: {}", foo);
             }
         }
         let t = identify_type(
@@ -340,7 +372,7 @@ pub fn convert_roman_to_indic(input: &str, source: &Script, destination: &Script
         match t {
             CharType::ConsonantsMain => {
                 println!("char was: {}", s);
-                // If previous char was a consonant we push a virama before 
+                // If previous char was a consonant we push a virama before
                 match was_char {
                     true => {
                         output.push_str(destination.vowelsigns.virama[0].as_str());
@@ -359,7 +391,7 @@ pub fn convert_roman_to_indic(input: &str, source: &Script, destination: &Script
                 // If so push a vowelsigns.main
                 // else push vowels.main
 
-                // Edge case: 
+                // Edge case:
                 // If input is 'a' and was_char is true, we need not push
                 // anything because 'a' is present implicitly at end of every
                 // consonant unless mentioned otherwise
@@ -369,24 +401,32 @@ pub fn convert_roman_to_indic(input: &str, source: &Script, destination: &Script
                         match s.as_str() {
                             _ if s == source.vowels.main[0].as_str() => {
                                 // Do Nothing
-                            },
+                            }
                             _ => {
-                                output.push_str(hash_map_vowelsigns_main.get(s.as_str()).unwrap_or_else(|| hash_map_vowels_main.get(s.as_str()).unwrap()));
-                            },
+                                output.push_str(
+                                    hash_map_vowelsigns_main.get(s.as_str()).unwrap_or_else(|| {
+                                        hash_map_vowels_main.get(s.as_str()).unwrap()
+                                    }),
+                                );
+                            }
                         }
-                    },
+                    }
                     false => {
-                        output.push_str(hash_map_vowels_main.get(s.as_str()).unwrap_or_else(|| hash_map_vowelsigns_main.get(s.as_str()).unwrap()));
-                    },
+                        output.push_str(
+                            hash_map_vowels_main.get(s.as_str()).unwrap_or_else(|| {
+                                hash_map_vowelsigns_main.get(s.as_str()).unwrap()
+                            }),
+                        );
+                    }
                 }
-                was_char = false;   
+                was_char = false;
             }
             CharType::VowelSignsVirama => {
                 output.push_str(hash_map_vowelsigns_virama.get(s.as_str()).unwrap());
                 was_char = false;
             }
             CharType::OthersSymbols => {
-                // If previous char was a consonant we push a virama before 
+                // If previous char was a consonant we push a virama before
                 match was_char {
                     true => {
                         output.push_str(destination.vowelsigns.virama[0].as_str());
@@ -399,7 +439,7 @@ pub fn convert_roman_to_indic(input: &str, source: &Script, destination: &Script
                 was_char = false;
             }
             CharType::OthersAytham => {
-                // If previous char was a consonant we push a virama before 
+                // If previous char was a consonant we push a virama before
                 match was_char {
                     true => {
                         output.push_str(destination.vowelsigns.virama[0].as_str());
@@ -412,7 +452,7 @@ pub fn convert_roman_to_indic(input: &str, source: &Script, destination: &Script
                 was_char = false;
             }
             CharType::CombiningSignsAyogavaha => {
-                // If previous char was a consonant we push a virama before 
+                // If previous char was a consonant we push a virama before
                 match was_char {
                     true => {
                         output.push_str(destination.vowelsigns.virama[0].as_str());
@@ -425,7 +465,7 @@ pub fn convert_roman_to_indic(input: &str, source: &Script, destination: &Script
                 was_char = false;
             }
             CharType::Space => {
-                // If previous char was a consonant we push a virama before 
+                // If previous char was a consonant we push a virama before
                 match was_char {
                     true => {
                         output.push_str(destination.vowelsigns.virama[0].as_str());
@@ -438,7 +478,7 @@ pub fn convert_roman_to_indic(input: &str, source: &Script, destination: &Script
                 was_char = false;
             }
             CharType::NewLine => {
-                // If previous char was a consonant we push a virama before 
+                // If previous char was a consonant we push a virama before
                 match was_char {
                     true => {
                         output.push_str(destination.vowelsigns.virama[0].as_str());
@@ -451,7 +491,7 @@ pub fn convert_roman_to_indic(input: &str, source: &Script, destination: &Script
                 was_char = false;
             }
             CharType::Numerals => {
-                // If previous char was a consonant we push a virama before 
+                // If previous char was a consonant we push a virama before
                 match was_char {
                     true => {
                         output.push_str(destination.vowelsigns.virama[0].as_str());
@@ -464,7 +504,7 @@ pub fn convert_roman_to_indic(input: &str, source: &Script, destination: &Script
                 was_char = false;
             }
             _ => {
-                // If previous char was a consonant we push a virama before 
+                // If previous char was a consonant we push a virama before
                 match was_char {
                     true => {
                         output.push_str(destination.vowelsigns.virama[0].as_str());
