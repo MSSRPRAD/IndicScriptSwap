@@ -30,9 +30,4 @@ mod tests {
         let converted = convert_indic_to_indic(input, telugu, devanagari);
         assert_eq!(expected, converted);
     }
-
-    #[test]
-    fn test_subtraction() {
-        assert_eq!(5 - 3, 2);
-    }
 }
