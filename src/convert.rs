@@ -633,7 +633,7 @@ pub fn convert_indic_to_intermediate(
             CharType::ConsonantsMain => {
                 // Push the corresponding destination consonant
                 output.push(Akshara::ConsonantsMain(
-                    hash_map_consonants_main.get(s.as_str()).unwrap().clone(),
+                    *hash_map_consonants_main.get(s.as_str()).unwrap(),
                 ));
                 // If there is a next character
                 if i < len - 1 {
@@ -665,35 +665,32 @@ pub fn convert_indic_to_intermediate(
             }
             CharType::VowelsMain => {
                 output.push(Akshara::VowelMain(
-                    hash_map_vowels_main.get(s.as_str()).unwrap().clone(),
+                    *hash_map_vowels_main.get(s.as_str()).unwrap(),
                 ));
             }
             CharType::VowelSignsMain => {
                 output.push(Akshara::VowelSignMain(
-                    hash_map_vowelsigns_main.get(s.as_str()).unwrap().clone(),
+                    *hash_map_vowelsigns_main.get(s.as_str()).unwrap(),
                 ));
             }
             CharType::VowelSignsVirama => {
                 output.push(Akshara::VowelSignVirama(
-                    hash_map_vowelsigns_virama.get(s.as_str()).unwrap().clone(),
+                    *hash_map_vowelsigns_virama.get(s.as_str()).unwrap(),
                 ));
             }
             CharType::OthersSymbols => {
                 output.push(Akshara::Symbols(
-                    hash_map_others_symbols.get(s.as_str()).unwrap().clone(),
+                    *hash_map_others_symbols.get(s.as_str()).unwrap(),
                 ));
             }
             CharType::OthersAytham => {
                 output.push(Akshara::Aytham(
-                    hash_map_others_aytham.get(s.as_str()).unwrap().clone(),
+                    *hash_map_others_aytham.get(s.as_str()).unwrap(),
                 ));
             }
             CharType::CombiningSignsAyogavaha => {
                 output.push(Akshara::Ayogavaha(
-                    hash_map_combiningsigns_ayogavaha
-                        .get(s.as_str())
-                        .unwrap()
-                        .clone(),
+                    *hash_map_combiningsigns_ayogavaha.get(s.as_str()).unwrap(),
                 ));
             }
             CharType::Space => {
@@ -704,7 +701,7 @@ pub fn convert_indic_to_intermediate(
             }
             CharType::Numerals => {
                 output.push(Akshara::Numerals(
-                    hash_map_numerals.get(s.as_str()).unwrap().clone(),
+                    *hash_map_numerals.get(s.as_str()).unwrap(),
                 ));
             }
             CharType::CouldNotIdentify => {}
