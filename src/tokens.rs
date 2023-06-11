@@ -1,68 +1,4 @@
-// use std::collections::HashMap;
-// use std::fmt;
-
-// #[allow(non_camel_case_types)]
-// #[derive(Debug, Clone, PartialEq)]
-// pub enum Vowels {
-//     a,
-//     ā,
-//     i,
-//     ī,
-//     u,
-//     ū,
-//     ṛ,
-//     ṝ,
-//     ḷ,
-//     ḹ,
-//     è,
-//     e,
-//     ai,
-//     ò,
-//     o,
-//     au,
-// }
-// #[allow(non_camel_case_types)]
-// #[derive(Debug, Clone, PartialEq)]
-// pub enum VowelMarks {
-//     a,
-//     ā,
-//     i,
-//     ī,
-//     u,
-//     ū,
-//     ṛ,
-//     ṝ,
-//     ḷ,
-//     ḹ,
-//     è,
-//     e,
-//     ai,
-//     ò,
-//     o,
-//     au,
-// }
-
-// #[allow(non_camel_case_types)]
-// #[derive(Debug, Clone, PartialEq)]
-// pub enum Yogavāhas {
-//     ṃ,
-//     ḥ,
-//     candrabindu,
-// }
-
-// #[allow(non_camel_case_types)]
-// #[derive(Debug, Clone, PartialEq)]
-// pub enum Virāma {
-//     virāma,
-// }
-
-// #[allow(non_camel_case_types)]
-// #[derive(Debug, Clone, PartialEq)]
-// pub enum Accents {
-//     udātta,
-//     anudātta,
-//     svarita,
-// }
+use crate::read_mappings::VowelSign;
 
 #[allow(non_camel_case_types)]
 #[derive(Debug, Clone, PartialEq)]
@@ -272,35 +208,45 @@ pub enum ConsonantsMain {
     h,
 }
 
-// #[allow(non_camel_case_types)]
-// #[derive(Debug, Clone, PartialEq)]
-// pub enum Symbols {
-//     zero,
-//     one,
-//     two,
-//     three,
-//     four,
-//     five,
-//     six,
-//     seven,
-//     eight,
-//     nine,
-//     oṃ,
-//     avagraha,
-//     daṇḍa,
-//     dvidaṇḍa,
-//     whitespace,
-//     newline,
-// }
-
-// #[derive(Debug, Clone, PartialEq)]
-// pub enum Token<Vowels, VowelMarks, Accents, Consonants, Yogavāhas, Symbols, Virāma> {
-//     Vowel(Vowels),
-//     VowelMark(VowelMarks),
-//     Accent(Accents),
-//     Consonant(Consonants),
-//     Yogavāha(Yogavāhas),
-//     Symbol(Symbols),
-//     Virāmam(Virāma),
-//     Unk(char),
-// }
+#[derive(Debug, Clone, PartialEq)]
+pub enum Token<
+    Ayogavaha,
+    Aytham,
+    ConsonantsMain,
+    Nukta,
+    Numerals,
+    Om,
+    PersoArabic,
+    Sinhala,
+    South,
+    Symbols,
+    VowelMain,
+    VowelModern,
+    VowelSignMain,
+    VowelSignModern,
+    VowelSignSinhala,
+    VowelSignSouth,
+    VowelSignVirama,
+    VowelSinhala,
+    VowelSouth,
+> {
+    Ayogavaha(Ayogavaha),
+    Aytham(Aytham),
+    ConsonantsMain(ConsonantsMain),
+    Nukta(Nukta),
+    Numerals(Numerals),
+    Om(Om),
+    PersoArabic(PersoArabic),
+    Sinhala(Sinhala),
+    South(South),
+    Symbols(Symbols),
+    VowelMain(VowelMain),
+    VowelModern(VowelModern),
+    VowelSignMain(VowelSignMain),
+    VowelSignModern(VowelSignModern),
+    VowelSignSinhala(VowelSignSinhala),
+    VowelSignSouth(VowelSignSouth),
+    VowelSignVirama(VowelSignVirama),
+    VowelSinhala(VowelSinhala),
+    VowelSouth(VowelSouth),
+}

@@ -1,4 +1,12 @@
-use crate::read_mappings::*;
+use crate::tokens::{
+    Ayogavaha, Aytham, ConsonantsMain, Nukta, PersoArabic, Sinhala, South, Symbols, VowelMain,
+    VowelModern, VowelSignMain, VowelSignModern, VowelSignSinhala, VowelSignSouth, VowelSignVirama,
+    VowelSinhala, VowelSouth,
+};
+use crate::{
+    read_mappings::*,
+    tokens::{Numerals, Om},
+};
 use lazy_static::lazy_static;
 use maplit::hashmap;
 use std::collections::HashMap;
@@ -31,9 +39,143 @@ pub static ref HASH_MAP: HashMap<&'static str, Script> = hashmap!{
     "hk" => Script { combiningsigns: CombiningSign { ayogavaha: ["~", "M", "H"].iter().map(|&s| s.into()).collect(), nukta: ["Q"].iter().map(|&s| s.into()).collect() }, consonants: Consonant { main: ["k", "kh", "g", "gh", "G", "c", "ch", "j", "jh", "J", "T", "Th", "D", "Dh", "N", "t", "th", "d", "dh", "n", "p", "ph", "b", "bh", "m", "y", "r", "l", "v", "z", "S", "s", "h"].iter().map(|&s| s.into()).collect(), persoarabic: ["q", "qh", "g2", "z2", "r3", "r3h", "f", "Y"].iter().map(|&s| s.into()).collect(), sinhala: ["n*g", "n*j", "n*D", "n*d", "m*b"].iter().map(|&s| s.into()).collect(), south: ["L", "Z", "r2", "n2"].iter().map(|&s| s.into()).collect() }, numerals: ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"].iter().map(|&s| s.into()).collect(), others: Other { aytham: ["K"].iter().map(|&s| s.into()).collect(), om: ["oM"].iter().map(|&s| s.into()).collect(), symbols: ["'", ".", ".."].iter().map(|&s| s.into()).collect() }, vowels: Vowel { main: ["a", "A", "i", "I", "u", "U", "R", "RR", "lR", "lRR", "e", "ai", "o", "au"].iter().map(|&s| s.into()).collect(), modern: ["aE", "aO"].iter().map(|&s| s.into()).collect(), sinhala: ["AE"].iter().map(|&s| s.into()).collect(), south: ["E", "O"].iter().map(|&s| s.into()).collect() }, vowelsigns: VowelSign { main: ["A", "i", "I", "u", "U", "R", "RR", "lR", "lRR", "e", "ai", "o", "au"].iter().map(|&s| s.into()).collect(), modern: ["aE", "aO"].iter().map(|&s| s.into()).collect(), sinhala: ["AE"].iter().map(|&s| s.into()).collect(), south: ["E", "O"].iter().map(|&s| s.into()).collect(), virama: ["×"].iter().map(|&s| s.into()).collect() } },
 
     };
+
 }
 
-// fn main() {
-//     let foo = data::HASH_MAP;
-//     println!("{:?}", foo);
-// }
+lazy_static! {
+    #[derive(Debug)]
+    pub static ref SCRIPT_INTERMEDIATE: ScriptIntermediate = {
+        let combiningsigns = CombiningSignIntermediate {
+            ayogavaha: vec![Ayogavaha::C, Ayogavaha::M, Ayogavaha::H],
+            nukta: vec![Nukta::Q],
+        };
+
+        let consonants = ConsonantIntermediate {
+            main: vec![
+                ConsonantsMain::k,
+                ConsonantsMain::K,
+                ConsonantsMain::g,
+                ConsonantsMain::G,
+                ConsonantsMain::N,
+                ConsonantsMain::c,
+                ConsonantsMain::C,
+                ConsonantsMain::j,
+                ConsonantsMain::J,
+                ConsonantsMain::Y,
+                ConsonantsMain::w,
+                ConsonantsMain::W,
+                ConsonantsMain::q,
+                ConsonantsMain::Q,
+                ConsonantsMain::R,
+                ConsonantsMain::t,
+                ConsonantsMain::T,
+                ConsonantsMain::d,
+                ConsonantsMain::D,
+                ConsonantsMain::n,
+                ConsonantsMain::p,
+                ConsonantsMain::P,
+                ConsonantsMain::b,
+                ConsonantsMain::B,
+                ConsonantsMain::m,
+                ConsonantsMain::y,
+                ConsonantsMain::r,
+                ConsonantsMain::l,
+                ConsonantsMain::v,
+                ConsonantsMain::S,
+                ConsonantsMain::z,
+                ConsonantsMain::s,
+                ConsonantsMain::h,
+            ],
+            persoarabic: vec![
+                PersoArabic::k0,
+                PersoArabic::K0,
+                PersoArabic::g0,
+                PersoArabic::j0,
+                PersoArabic::q0,
+                PersoArabic::Q0,
+                PersoArabic::P0,
+                PersoArabic::Y0,
+            ],
+            sinhala: vec![
+                Sinhala::n_g,
+                Sinhala::n_j,
+                Sinhala::n_q,
+                Sinhala::n_d,
+                Sinhala::m_b,
+            ],
+            south: vec![South::L, South::L0, South::r2, South::n2],
+        };
+
+        let numerals = vec![
+            Numerals::zero,
+            Numerals::one,
+            Numerals::two,
+            Numerals::three,
+            Numerals::four,
+            Numerals::five,
+            Numerals::six,
+            Numerals::seven,
+            Numerals::eight,
+            Numerals::nine,
+        ];
+
+        let others = OtherIntermediate {
+            aytham: vec![Aytham::K],
+            om: vec![Om::oM],
+            symbols: vec![Symbols::A, Symbols::D, Symbols::DD],
+        };
+
+        let vowels = VowelIntermediate {
+            main: vec![
+                VowelMain::a,
+                VowelMain::A,
+                VowelMain::i,
+                VowelMain::I,
+                VowelMain::u,
+                VowelMain::U,
+                VowelMain::f,
+                VowelMain::F,
+                VowelMain::x,
+                VowelMain::X,
+                VowelMain::e,
+                VowelMain::E,
+                VowelMain::o,
+                VowelMain::O,
+            ],
+            modern: vec![VowelModern::e2, VowelModern::o2],
+            sinhala: vec![VowelSinhala::e4],
+            south: vec![VowelSouth::e1, VowelSouth::o1],
+        };
+
+        let vowelsigns = VowelSignIntermediate {
+            main: vec![
+                VowelSignMain::A,
+                VowelSignMain::i,
+                VowelSignMain::I,
+                VowelSignMain::u,
+                VowelSignMain::U,
+                VowelSignMain::f,
+                VowelSignMain::F,
+                VowelSignMain::x,
+                VowelSignMain::X,
+                VowelSignMain::e,
+                VowelSignMain::E,
+                VowelSignMain::o,
+                VowelSignMain::O,
+            ],
+            modern: vec![VowelSignModern::e2, VowelSignModern::o2],
+            sinhala: vec![VowelSignSinhala::e4],
+            south: vec![VowelSignSouth::e1, VowelSignSouth::o1],
+            virama: vec![VowelSignVirama::x],
+        };
+
+        return ScriptIntermediate {
+            combiningsigns: combiningsigns,
+            consonants: consonants,
+            numerals: numerals,
+            others: others,
+            vowels: vowels,
+            vowelsigns: vowelsigns,
+        }
+    };
+}

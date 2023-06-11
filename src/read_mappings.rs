@@ -1,7 +1,9 @@
+use std::fmt;
+
 use crate::tokens::{
-    Ayogavaha, Aytham, ConsonantsMain, Nukta, Om, PersoArabic, Sinhala, South, Symbols, VowelMain,
-    VowelModern, VowelSignMain, VowelSignModern, VowelSignSinhala, VowelSignSouth, VowelSignVirama,
-    VowelSinhala, VowelSouth,
+    Ayogavaha, Aytham, ConsonantsMain, Nukta, Numerals, Om, PersoArabic, Sinhala, South, Symbols,
+    VowelMain, VowelModern, VowelSignMain, VowelSignModern, VowelSignSinhala, VowelSignSouth,
+    VowelSignVirama, VowelSinhala, VowelSouth,
 };
 
 #[derive(Debug)]
@@ -96,7 +98,7 @@ pub struct VowelSignIntermediate {
 pub struct ScriptIntermediate {
     pub combiningsigns: CombiningSignIntermediate,
     pub consonants: ConsonantIntermediate,
-    pub numerals: Vec<String>,
+    pub numerals: Vec<Numerals>,
     pub others: OtherIntermediate,
     pub vowels: VowelIntermediate,
     pub vowelsigns: VowelSignIntermediate,

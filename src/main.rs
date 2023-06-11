@@ -1,15 +1,24 @@
-// use transliterate_ferris::convert::{
-//     convert_indic_to_indic, convert_indic_to_roman, convert_roman_to_indic, convert_roman_to_roman,
-// };
 use transliterate_ferris::data::HASH_MAP;
+use transliterate_ferris::data::SCRIPT_INTERMEDIATE;
+use transliterate_ferris::functions::make_hash_map_from_intermediate;
+
 fn main() {
     let foo = &HASH_MAP;
 
-    let slp1 = foo.get("slp1").unwrap();
-    // let devanagari = foo.get("devanagari").unwrap();
+    let telugu = foo.get("telugu").unwrap();
 
-    println!("{:?}", slp1);
+    println!("{:?}", SCRIPT_INTERMEDIATE);
 
+    let my_tuple = make_hash_map_from_intermediate(telugu, &SCRIPT_INTERMEDIATE);
+    // Print individual elements using tuple indexing
+    println!("Element 0: {:?}", my_tuple.0);
+    println!("Element 1: {:?}", my_tuple.1);
+    println!("Element 2: {:?}", my_tuple.2);
+    println!("Element 3: {:?}", my_tuple.3);
+    println!("Element 4: {:?}", my_tuple.4);
+    println!("Element 5: {:?}", my_tuple.5);
+    println!("Element 6: {:?}", my_tuple.6);
+    println!("Element 7: {:?}", my_tuple.7);
     // let input = "తపఃస్వాధ్యాయనిరతం తపస్వీ వాగ్విదాం వరమ్ ।
     //             నారదం పరిపప్రచ్ఛ వాల్మీకిర్మునిపుంగవమ్ ॥ ౧ ॥
     //             కో న్వస్మిన్సామ్ప్రతం లోకే గుణవాన్కశ్చ వీర్యవాన్ ।
