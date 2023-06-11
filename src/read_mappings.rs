@@ -1,5 +1,3 @@
-use std::fmt;
-
 use crate::tokens::{
     Ayogavaha, Aytham, ConsonantsMain, Nukta, Numerals, Om, PersoArabic, Sinhala, South, Symbols,
     VowelMain, VowelModern, VowelSignMain, VowelSignModern, VowelSignSinhala, VowelSignSouth,

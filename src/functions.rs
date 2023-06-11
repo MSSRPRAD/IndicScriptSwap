@@ -5,8 +5,7 @@ use crate::{
         VowelSignVirama,
     },
 };
-use core::num;
-use std::{collections::HashMap, hash::Hash};
+use std::{collections::HashMap};
 
 #[derive(PartialEq, Debug)]
 pub struct ScriptTokenMappings {
