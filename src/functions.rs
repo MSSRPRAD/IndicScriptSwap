@@ -5,19 +5,7 @@ use crate::{
         VowelSignVirama,
     },
 };
-use std::{collections::HashMap};
-
-#[derive(PartialEq, Debug)]
-pub struct ScriptTokenMappings {
-    pub consonants_main: HashMap<&'static str, &'static str>,
-    pub vowels_main: HashMap<&'static str, &'static str>,
-    pub vowelsigns_main: HashMap<&'static str, &'static str>,
-    pub vowelsigns_virama: HashMap<&'static str, &'static str>,
-    pub numerals: HashMap<&'static str, &'static str>,
-    pub others_aytham: HashMap<&'static str, &'static str>,
-    pub combining_signs_ayogavaha: HashMap<&'static str, &'static str>,
-    pub others_symbols: HashMap<&'static str, &'static str>,
-}
+use std::collections::HashMap;
 
 #[derive(PartialEq, Debug)]
 pub enum CharType {
@@ -44,6 +32,42 @@ pub fn identify_type(
     hash_map_others_aytham: &HashMap<&str, &str>,
     hash_map_combining_signs_ayogavaha: &HashMap<&str, &str>,
     hash_map_others_symbols: &HashMap<&str, &str>,
+) -> CharType {
+    if hash_map_consonants_main.contains_key(&*c.to_string()) {
+        return CharType::ConsonantsMain;
+    } else if hash_map_combining_signs_ayogavaha.contains_key(&*c.to_string()) {
+        return CharType::CombiningSignsAyogavaha;
+    } else if hash_map_vowels_main.contains_key(&*c.to_string()) {
+        return CharType::VowelsMain;
+    } else if hash_map_vowelsigns_main.contains_key(&*c.to_string()) {
+        return CharType::VowelSignsMain;
+    } else if hash_map_vowelsigns_virama.contains_key(&*c.to_string()) {
+        return CharType::VowelSignsVirama;
+    } else if hash_map_numerals.contains_key(&*c.to_string()) {
+        return CharType::Numerals;
+    } else if hash_map_others_symbols.contains_key(&*c.to_string()) {
+        return CharType::OthersSymbols;
+    } else if hash_map_others_aytham.contains_key(&*c.to_string()) {
+        return CharType::OthersAytham;
+    } else if c == " " {
+        return CharType::Space;
+    } else if c == "\n" {
+        return CharType::NewLine;
+    } else {
+        return CharType::CouldNotIdentify;
+    }
+}
+
+pub fn identify_type_intermediate(
+    c: &str,
+    hash_map_consonants_main: &HashMap<&str, ConsonantsMain>,
+    hash_map_vowels_main: &HashMap<&str, VowelMain>,
+    hash_map_vowelsigns_main: &HashMap<&str, VowelSignMain>,
+    hash_map_vowelsigns_virama: &HashMap<&str, VowelSignVirama>,
+    hash_map_numerals: &HashMap<&str, Numerals>,
+    hash_map_others_aytham: &HashMap<&str, Aytham>,
+    hash_map_combining_signs_ayogavaha: &HashMap<&str, Ayogavaha>,
+    hash_map_others_symbols: &HashMap<&str, Symbols>,
 ) -> CharType {
     if hash_map_consonants_main.contains_key(&*c.to_string()) {
         return CharType::ConsonantsMain;

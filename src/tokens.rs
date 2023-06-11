@@ -164,6 +164,13 @@ pub enum Unknown {
 
 #[allow(non_camel_case_types)]
 #[derive(Debug, Clone, PartialEq)]
+pub enum Others {
+    Space,
+    NewLine,
+}
+
+#[allow(non_camel_case_types)]
+#[derive(Debug, Clone, PartialEq)]
 pub enum VowelSignVirama {
     x,
 }
@@ -207,7 +214,7 @@ pub enum ConsonantsMain {
 }
 
 #[derive(Debug, Clone, PartialEq)]
-pub enum Token<
+pub enum Akshara<
     Ayogavaha,
     Aytham,
     ConsonantsMain,
@@ -227,6 +234,7 @@ pub enum Token<
     VowelSignVirama,
     VowelSinhala,
     VowelSouth,
+    Others,
 > {
     Ayogavaha(Ayogavaha),
     Aytham(Aytham),
@@ -247,4 +255,11 @@ pub enum Token<
     VowelSignVirama(VowelSignVirama),
     VowelSinhala(VowelSinhala),
     VowelSouth(VowelSouth),
+    Others(Others),
 }
+
+// #[derive(Debug)]
+// pub struct Akshara {
+//     enum_name: &'static str,
+//     variant: Box<dyn std::fmt::Debug>,
+// }

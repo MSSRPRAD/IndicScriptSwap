@@ -1,5 +1,15 @@
-use crate::functions::{identify_type, make_hash_map, CharType};
+use crate::data::SCRIPT_INTERMEDIATE;
+use crate::functions::{
+    identify_type, identify_type_intermediate, make_hash_map, make_hash_map_from_intermediate,
+    CharType,
+};
 use crate::read_mappings::Script;
+use crate::tokens::{Akshara, Others};
+use crate::tokens::{
+    Ayogavaha, Aytham, ConsonantsMain, Nukta, Numerals, Om, PersoArabic, Sinhala, South, Symbols,
+    VowelMain, VowelModern, VowelSignMain, VowelSignModern, VowelSignSinhala, VowelSignSouth,
+    VowelSignVirama, VowelSinhala, VowelSouth,
+};
 
 pub fn convert_indic_to_indic(input: &str, source: &Script, destination: &Script) -> String {
     // Make a hashmap from source characters to corresponding destination ones
@@ -530,4 +540,176 @@ pub fn convert_roman_to_roman(input: &str, source: &Script, destination: &Script
     }
 
     output
+}
+// Vec<Box<dyn Debug>>
+pub fn convert_indic_to_intermediate(
+    input: &str,
+    source: &Script,
+) -> Vec<
+    Akshara<
+        Ayogavaha,
+        Aytham,
+        ConsonantsMain,
+        Nukta,
+        Numerals,
+        Om,
+        PersoArabic,
+        Sinhala,
+        South,
+        Symbols,
+        VowelMain,
+        VowelModern,
+        VowelSignMain,
+        VowelSignModern,
+        VowelSignSinhala,
+        VowelSignSouth,
+        VowelSignVirama,
+        VowelSinhala,
+        VowelSouth,
+        Others,
+    >,
+> {
+    // Make a hashmap from source characters to corresponding destination ones
+    // Since all we need now is the consonants, numerals, vowels, vowelsigns, others, we will make only for them for now.
+
+    let my_tuple = make_hash_map_from_intermediate(source, &SCRIPT_INTERMEDIATE);
+
+    // Make the hash maps
+    let hash_map_consonants_main = my_tuple.0;
+    let hash_map_vowels_main = my_tuple.1;
+    let hash_map_vowelsigns_main = my_tuple.2;
+    let hash_map_vowelsigns_virama = my_tuple.3;
+    let hash_map_numerals = my_tuple.4;
+    let hash_map_others_aytham = my_tuple.5;
+    let hash_map_combiningsigns_ayogavaha = my_tuple.6;
+    let hash_map_others_symbols = my_tuple.7;
+
+    // Conversion is a bit more complicated here. This is because there is often a hidden 'a' after
+    // most consonants. We need to check this case by seeing the next character after a consonant.
+
+    // Create the vector of tokens
+    let mut output: Vec<
+        Akshara<
+            Ayogavaha,
+            Aytham,
+            ConsonantsMain,
+            Nukta,
+            Numerals,
+            Om,
+            PersoArabic,
+            Sinhala,
+            South,
+            Symbols,
+            VowelMain,
+            VowelModern,
+            VowelSignMain,
+            VowelSignModern,
+            VowelSignSinhala,
+            VowelSignSouth,
+            VowelSignVirama,
+            VowelSinhala,
+            VowelSouth,
+            Others,
+        >,
+    > = Vec::new();
+
+    let len = input.chars().count();
+    let chars: Vec<char> = input.chars().collect();
+    for i in 0..len {
+        let s = &mut String::new();
+        s.push(chars[i]);
+        let t = identify_type_intermediate(
+            s,
+            &hash_map_consonants_main,
+            &hash_map_vowels_main,
+            &hash_map_vowelsigns_main,
+            &hash_map_vowelsigns_virama,
+            &hash_map_numerals,
+            &hash_map_others_aytham,
+            &hash_map_combiningsigns_ayogavaha,
+            &hash_map_others_symbols,
+        );
+        match t {
+            CharType::ConsonantsMain => {
+                // Push the corresponding destination consonant
+                output.push(Akshara::ConsonantsMain(
+                    hash_map_consonants_main.get(s.as_str()).unwrap().clone(),
+                ));
+                // If there is a next character
+                if i < len - 1 {
+                    match identify_type_intermediate(
+                        &chars[i + 1].to_string(),
+                        &hash_map_consonants_main,
+                        &hash_map_vowels_main,
+                        &hash_map_vowelsigns_main,
+                        &hash_map_vowelsigns_virama,
+                        &hash_map_numerals,
+                        &hash_map_others_aytham,
+                        &hash_map_combiningsigns_ayogavaha,
+                        &hash_map_others_symbols,
+                    ) {
+                        // If the next character is a virama or vowelsign or symbol or it is a vowel
+                        CharType::VowelSignsVirama
+                        | CharType::VowelSignsMain
+                        | CharType::OthersSymbols
+                        | CharType::Numerals
+                        | CharType::VowelsMain => {
+                            // Do Nothing
+                        }
+                        // Otherwise add the schwa also to the output
+                        _ => {
+                            output.push(Akshara::VowelMain(VowelMain::a));
+                        }
+                    }
+                }
+            }
+            CharType::VowelsMain => {
+                output.push(Akshara::VowelMain(
+                    hash_map_vowels_main.get(s.as_str()).unwrap().clone(),
+                ));
+            }
+            CharType::VowelSignsMain => {
+                output.push(Akshara::VowelSignMain(
+                    hash_map_vowelsigns_main.get(s.as_str()).unwrap().clone(),
+                ));
+            }
+            CharType::VowelSignsVirama => {
+                output.push(Akshara::VowelSignVirama(
+                    hash_map_vowelsigns_virama.get(s.as_str()).unwrap().clone(),
+                ));
+            }
+            CharType::OthersSymbols => {
+                output.push(Akshara::Symbols(
+                    hash_map_others_symbols.get(s.as_str()).unwrap().clone(),
+                ));
+            }
+            CharType::OthersAytham => {
+                output.push(Akshara::Aytham(
+                    hash_map_others_aytham.get(s.as_str()).unwrap().clone(),
+                ));
+            }
+            CharType::CombiningSignsAyogavaha => {
+                output.push(Akshara::Ayogavaha(
+                    hash_map_combiningsigns_ayogavaha
+                        .get(s.as_str())
+                        .unwrap()
+                        .clone(),
+                ));
+            }
+            CharType::Space => {
+                output.push(Akshara::Others(Others::Space));
+            }
+            CharType::NewLine => {
+                output.push(Akshara::Others(Others::NewLine));
+            }
+            CharType::Numerals => {
+                output.push(Akshara::Numerals(
+                    hash_map_numerals.get(s.as_str()).unwrap().clone(),
+                ));
+            }
+            CharType::CouldNotIdentify => {}
+        };
+    }
+
+    return output;
 }
