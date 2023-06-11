@@ -263,7 +263,6 @@ pub fn convert_roman_to_indic(input: &str, source: &Script, destination: &Script
         );
         match t {
             CharType::ConsonantsMain => {
-                
                 // If previous char was a consonant we push a virama before
                 match was_char {
                     true => {
@@ -278,7 +277,6 @@ pub fn convert_roman_to_indic(input: &str, source: &Script, destination: &Script
                 was_char = true;
             }
             CharType::VowelSignsMain | CharType::VowelsMain => {
-                
                 // Check if the previous character in input was a consonant
                 // If so push a vowelsigns.main
                 // else push vowels.main
@@ -485,7 +483,6 @@ pub fn convert_roman_to_roman(input: &str, source: &Script, destination: &Script
             {
                 skip = true;
                 s.push(chars[i + 1]);
-                
             }
         }
         let t = identify_type(
@@ -528,8 +525,7 @@ pub fn convert_roman_to_roman(input: &str, source: &Script, destination: &Script
             CharType::Numerals => {
                 output.push_str(hash_map_numerals.get(s.as_str()).unwrap());
             }
-            _ => {
-            }
+            _ => {}
         };
     }
 
