@@ -541,7 +541,7 @@ pub fn convert_roman_to_roman(input: &str, source: &Script, destination: &Script
 
     output
 }
-// Vec<Box<dyn Debug>>
+
 pub fn convert_indic_to_intermediate(
     input: &str,
     source: &Script,
