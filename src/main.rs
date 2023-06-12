@@ -57,5 +57,4 @@ fn main() {
     start = Instant::now();
     let converted = convert_intermediate_to_roman(intermediate, iast);
     println!("{:?}", converted);
-    
 }

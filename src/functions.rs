@@ -161,16 +161,16 @@ pub fn make_hash_map_from_intermediate_to_script<'a>(
     script: &'a Script,
     script_intermediate: &'a ScriptIntermediate,
 ) -> (
-    HashMap<ConsonantsMain,&'a str>,
-    HashMap<VowelMain,&'a str>,
-    HashMap<VowelSignMain,&'a str>,
-    HashMap<VowelSignVirama,&'a str>,
-    HashMap<Numerals,&'a str>,
-    HashMap<Aytham,&'a str>,
-    HashMap<Ayogavaha,&'a str>,
-    HashMap<Symbols,&'a str>,
+    HashMap<ConsonantsMain, &'a str>,
+    HashMap<VowelMain, &'a str>,
+    HashMap<VowelSignMain, &'a str>,
+    HashMap<VowelSignVirama, &'a str>,
+    HashMap<Numerals, &'a str>,
+    HashMap<Aytham, &'a str>,
+    HashMap<Ayogavaha, &'a str>,
+    HashMap<Symbols, &'a str>,
 ) {
-    let mut consonants_main_mapping: HashMap<ConsonantsMain,&'a str> = HashMap::new();
+    let mut consonants_main_mapping: HashMap<ConsonantsMain, &'a str> = HashMap::new();
 
     for (sound, intermediate_consonant) in script_intermediate
         .consonants
@@ -192,7 +192,7 @@ pub fn make_hash_map_from_intermediate_to_script<'a>(
         vowels_main_mapping.insert(*sound, intermediate_vowel_main);
     }
 
-    let mut vowelsigns_main_mapping: HashMap<VowelSignMain,&'a str> = HashMap::new();
+    let mut vowelsigns_main_mapping: HashMap<VowelSignMain, &'a str> = HashMap::new();
 
     for (sound, intermediate_vowelsigns_main) in script_intermediate
         .vowelsigns
@@ -279,7 +279,6 @@ pub fn make_hash_map_from_intermediate_to_script<'a>(
         symbols_mapping,
     );
 }
-
 
 pub fn make_hash_map_from_script_to_intermediate<'a>(
     script: &'a Script,

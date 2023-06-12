@@ -1,9 +1,9 @@
 use crate::data::SCRIPT_INTERMEDIATE;
 use crate::functions::{
     identify_type, identify_type_intermediate, make_hash_map,
-    CharType, make_hash_map_from_script_to_intermediate, make_hash_map_from_intermediate_to_script,
+    make_hash_map_from_intermediate_to_script, make_hash_map_from_script_to_intermediate, CharType,
 };
-use crate::read_mappings::{Script, Other};
+use crate::read_mappings::{Other, Script};
 use crate::tokens::{Akshara, Others};
 use crate::tokens::{
     Ayogavaha, Aytham, ConsonantsMain, Nukta, Numerals, Om, PersoArabic, Sinhala, South, Symbols,
@@ -544,40 +544,39 @@ pub fn convert_roman_to_roman(input: &str, source: &Script, destination: &Script
 
 pub fn convert_intermediate_to_indic(
     input: Vec<
-    Akshara<
-        String,
-        Ayogavaha,
-        Aytham,
-        ConsonantsMain,
-        Nukta,
-        Numerals,
-        Om,
-        PersoArabic,
-        Sinhala,
-        South,
-        Symbols,
-        VowelMain,
-        VowelModern,
-        VowelSignMain,
-        VowelSignModern,
-        VowelSignSinhala,
-        VowelSignSouth,
-        VowelSignVirama,
-        VowelSinhala,
-        VowelSouth,
-        Others,
+        Akshara<
+            String,
+            Ayogavaha,
+            Aytham,
+            ConsonantsMain,
+            Nukta,
+            Numerals,
+            Om,
+            PersoArabic,
+            Sinhala,
+            South,
+            Symbols,
+            VowelMain,
+            VowelModern,
+            VowelSignMain,
+            VowelSignModern,
+            VowelSignSinhala,
+            VowelSignSouth,
+            VowelSignVirama,
+            VowelSinhala,
+            VowelSouth,
+            Others,
+        >,
     >,
->,
     destination: &Script,
 ) -> String {
-
     // // Make a hashmap from source characters to corresponding destination ones
     // // Since all we need now is the consonants, numerals, vowels, vowelsigns, others, we will make only for them for now.
 
     let my_tuple = make_hash_map_from_intermediate_to_script(destination, &SCRIPT_INTERMEDIATE);
 
     let hash_map_consonants_main = my_tuple.0;
-    let hash_map_vowels_main =my_tuple.1;
+    let hash_map_vowels_main = my_tuple.1;
     let hash_map_vowelsigns_main = my_tuple.2;
     let hash_map_vowelsigns_virama = my_tuple.3;
     let hash_map_numerals = my_tuple.4;
@@ -616,7 +615,7 @@ pub fn convert_intermediate_to_indic(
                 // If input is 'a' and was_char is true, we need not push
                 // anything because 'a' is present implicitly at end of every
                 // consonant unless mentioned otherwise
-                
+
                 match was_char {
                     true => {
                         match s {
@@ -633,9 +632,7 @@ pub fn convert_intermediate_to_indic(
                                         );
                                     }
                                     Akshara::VowelMain(vowel) => {
-                                        output.push_str(
-                                            hash_map_vowels_main.get(&vowel).unwrap(),
-                                        );
+                                        output.push_str(hash_map_vowels_main.get(&vowel).unwrap());
                                     }
                                     _ => {
                                         // Do Nothing
@@ -649,14 +646,10 @@ pub fn convert_intermediate_to_indic(
                         // If not a vowel push the vowelsign
                         match s {
                             Akshara::VowelMain(vowel) => {
-                                output.push_str(
-                                    hash_map_vowels_main.get(&vowel).unwrap(),
-                                );
+                                output.push_str(hash_map_vowels_main.get(&vowel).unwrap());
                             }
                             Akshara::VowelSignMain(vowelsign) => {
-                                output.push_str(
-                                    hash_map_vowelsigns_main.get(&vowelsign).unwrap(),
-                                );
+                                output.push_str(hash_map_vowelsigns_main.get(&vowelsign).unwrap());
                             }
                             _ => {
                                 // Do Nothing
@@ -766,43 +759,41 @@ pub fn convert_intermediate_to_indic(
     output
 }
 
-
 pub fn convert_intermediate_to_roman(
     input: Vec<
-    Akshara<
-        String,
-        Ayogavaha,
-        Aytham,
-        ConsonantsMain,
-        Nukta,
-        Numerals,
-        Om,
-        PersoArabic,
-        Sinhala,
-        South,
-        Symbols,
-        VowelMain,
-        VowelModern,
-        VowelSignMain,
-        VowelSignModern,
-        VowelSignSinhala,
-        VowelSignSouth,
-        VowelSignVirama,
-        VowelSinhala,
-        VowelSouth,
-        Others,
+        Akshara<
+            String,
+            Ayogavaha,
+            Aytham,
+            ConsonantsMain,
+            Nukta,
+            Numerals,
+            Om,
+            PersoArabic,
+            Sinhala,
+            South,
+            Symbols,
+            VowelMain,
+            VowelModern,
+            VowelSignMain,
+            VowelSignModern,
+            VowelSignSinhala,
+            VowelSignSouth,
+            VowelSignVirama,
+            VowelSinhala,
+            VowelSouth,
+            Others,
+        >,
     >,
->,
     destination: &Script,
 ) -> String {
-
     // // Make a hashmap from source characters to corresponding destination ones
     // // Since all we need now is the consonants, numerals, vowels, vowelsigns, others, we will make only for them for now.
 
     let my_tuple = make_hash_map_from_intermediate_to_script(destination, &SCRIPT_INTERMEDIATE);
 
     let hash_map_consonants_main = my_tuple.0;
-    let hash_map_vowels_main =my_tuple.1;
+    let hash_map_vowels_main = my_tuple.1;
     let hash_map_vowelsigns_main = my_tuple.2;
     let hash_map_vowelsigns_virama = my_tuple.3;
     let hash_map_numerals = my_tuple.4;
@@ -855,7 +846,6 @@ pub fn convert_intermediate_to_roman(
     output
 }
 
-
 pub fn convert_indic_to_intermediate(
     input: &str,
     source: &Script,
@@ -884,7 +874,6 @@ pub fn convert_indic_to_intermediate(
         Others,
     >,
 > {
-
     // Make a hashmap from source characters to corresponding destination ones
     // Since all we need now is the consonants, numerals, vowels, vowelsigns, others, we will make only for them for now.
 
@@ -991,7 +980,7 @@ pub fn convert_indic_to_intermediate(
                 ));
             }
             CharType::VowelSignsVirama => {
-                // Do Nothing as roman intermediate does not have virama 
+                // Do Nothing as roman intermediate does not have virama
 
                 // output.push(Akshara::VowelSignVirama(
                 //     *hash_map_vowelsigns_virama.get(s.as_str()).unwrap(),
@@ -1024,9 +1013,7 @@ pub fn convert_indic_to_intermediate(
                 ));
             }
             CharType::CouldNotIdentify => {
-                output.push(Akshara::Unknown(
-                    s.to_string(),
-                ));
+                output.push(Akshara::Unknown(s.to_string()));
             }
         };
     }
@@ -1062,7 +1049,6 @@ pub fn convert_roman_to_intermediate(
         Others,
     >,
 > {
-
     // Make a hashmap from source characters to corresponding destination ones
     // Since all we need now is the consonants, numerals, vowels, vowelsigns, others, we will make only for them for now.
 
@@ -1180,22 +1166,34 @@ pub fn convert_roman_to_intermediate(
         match t {
             CharType::ConsonantsMain => {
                 // Push the corresponding output consonant
-                output.push(Akshara::ConsonantsMain(*hash_map_consonants_main.get(s.as_str()).unwrap()));
+                output.push(Akshara::ConsonantsMain(
+                    *hash_map_consonants_main.get(s.as_str()).unwrap(),
+                ));
             }
             CharType::VowelSignsMain | CharType::VowelsMain => {
-                output.push(Akshara::VowelMain(*hash_map_vowels_main.get(s.as_str()).unwrap()));
+                output.push(Akshara::VowelMain(
+                    *hash_map_vowels_main.get(s.as_str()).unwrap(),
+                ));
             }
             CharType::VowelSignsVirama => {
-                output.push(Akshara::VowelSignVirama(*hash_map_vowelsigns_virama.get(s.as_str()).unwrap()));
+                output.push(Akshara::VowelSignVirama(
+                    *hash_map_vowelsigns_virama.get(s.as_str()).unwrap(),
+                ));
             }
             CharType::OthersSymbols => {
-                output.push(Akshara::Symbols(*hash_map_others_symbols.get(s.as_str()).unwrap()));
+                output.push(Akshara::Symbols(
+                    *hash_map_others_symbols.get(s.as_str()).unwrap(),
+                ));
             }
             CharType::OthersAytham => {
-                output.push(Akshara::Aytham(*hash_map_others_aytham.get(s.as_str()).unwrap()));
+                output.push(Akshara::Aytham(
+                    *hash_map_others_aytham.get(s.as_str()).unwrap(),
+                ));
             }
             CharType::CombiningSignsAyogavaha => {
-                output.push(Akshara::Ayogavaha(*hash_map_combiningsigns_ayogavaha.get(s.as_str()).unwrap()));
+                output.push(Akshara::Ayogavaha(
+                    *hash_map_combiningsigns_ayogavaha.get(s.as_str()).unwrap(),
+                ));
             }
             CharType::Space => {
                 output.push(Akshara::Others(Others::Space));
@@ -1204,7 +1202,9 @@ pub fn convert_roman_to_intermediate(
                 output.push(Akshara::Others(Others::NewLine));
             }
             CharType::Numerals => {
-                output.push(Akshara::Numerals(*hash_map_numerals.get(s.as_str()).unwrap()));
+                output.push(Akshara::Numerals(
+                    *hash_map_numerals.get(s.as_str()).unwrap(),
+                ));
             }
             _ => {}
         };
