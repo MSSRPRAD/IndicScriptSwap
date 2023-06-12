@@ -157,7 +157,131 @@ pub fn make_hash_map<'a>(
     return hash_map;
 }
 
-pub fn make_hash_map_from_intermediate<'a>(
+pub fn make_hash_map_from_intermediate_to_script<'a>(
+    script: &'a Script,
+    script_intermediate: &'a ScriptIntermediate,
+) -> (
+    HashMap<ConsonantsMain,&'a str>,
+    HashMap<VowelMain,&'a str>,
+    HashMap<VowelSignMain,&'a str>,
+    HashMap<VowelSignVirama,&'a str>,
+    HashMap<Numerals,&'a str>,
+    HashMap<Aytham,&'a str>,
+    HashMap<Ayogavaha,&'a str>,
+    HashMap<Symbols,&'a str>,
+) {
+    let mut consonants_main_mapping: HashMap<ConsonantsMain,&'a str> = HashMap::new();
+
+    for (sound, intermediate_consonant) in script_intermediate
+        .consonants
+        .main
+        .iter()
+        .zip(script.consonants.main.iter())
+    {
+        consonants_main_mapping.insert(*sound, intermediate_consonant);
+    }
+
+    let mut vowels_main_mapping: HashMap<VowelMain, &'a str> = HashMap::new();
+
+    for (sound, intermediate_vowel_main) in script_intermediate
+        .vowels
+        .main
+        .iter()
+        .zip(script.vowels.main.iter())
+    {
+        vowels_main_mapping.insert(*sound, intermediate_vowel_main);
+    }
+
+    let mut vowelsigns_main_mapping: HashMap<VowelSignMain,&'a str> = HashMap::new();
+
+    for (sound, intermediate_vowelsigns_main) in script_intermediate
+        .vowelsigns
+        .main
+        .iter()
+        .zip(script.vowelsigns.main.iter())
+    {
+        vowelsigns_main_mapping.insert(*sound, intermediate_vowelsigns_main);
+    }
+
+    let mut vowelsigns_virama_mapping: HashMap<VowelSignVirama, &'a str> = HashMap::new();
+
+    for (sound, intermediate_vowelsigns_virama) in script_intermediate
+        .vowelsigns
+        .virama
+        .iter()
+        .zip(script.vowelsigns.virama.iter())
+    {
+        vowelsigns_virama_mapping.insert(*sound, intermediate_vowelsigns_virama);
+    }
+
+    let mut numerals_mapping: HashMap<Numerals, &'a str> = HashMap::new();
+
+    for (sound, numeral) in script_intermediate
+        .numerals
+        .iter()
+        .zip(script.numerals.iter())
+    {
+        numerals_mapping.insert(*sound, numeral);
+    }
+
+    let mut combiningsigns_ayogavaha_mapping: HashMap<Ayogavaha, &'a str> = HashMap::new();
+
+    for (sound, ayogavaha) in script_intermediate
+        .combiningsigns
+        .ayogavaha
+        .iter()
+        .zip(script.combiningsigns.ayogavaha.iter())
+    {
+        combiningsigns_ayogavaha_mapping.insert(*sound, ayogavaha);
+    }
+
+    let mut aytham_mapping: HashMap<Aytham, &'a str> = HashMap::new();
+
+    for (sound, aytham) in script_intermediate
+        .others
+        .aytham
+        .iter()
+        .zip(script.others.aytham.iter())
+    {
+        aytham_mapping.insert(*sound, aytham);
+    }
+
+    let mut symbols_mapping: HashMap<Symbols, &'a str> = HashMap::new();
+
+    for (sound, symbol) in script_intermediate
+        .others
+        .symbols
+        .iter()
+        .zip(script.others.symbols.iter())
+    {
+        symbols_mapping.insert(*sound, symbol);
+    }
+
+    let mut vowelsigns_virama_mapping: HashMap<VowelSignVirama, &'a str> = HashMap::new();
+
+    for (sound, vowelsigns_virama) in script_intermediate
+        .vowelsigns
+        .virama
+        .iter()
+        .zip(script.vowelsigns.virama.iter())
+    {
+        vowelsigns_virama_mapping.insert(*sound, vowelsigns_virama);
+    }
+
+    return (
+        consonants_main_mapping,
+        vowels_main_mapping,
+        vowelsigns_main_mapping,
+        vowelsigns_virama_mapping,
+        numerals_mapping,
+        aytham_mapping,
+        combiningsigns_ayogavaha_mapping,
+        symbols_mapping,
+    );
+}
+
+
+pub fn make_hash_map_from_script_to_intermediate<'a>(
     script: &'a Script,
     script_intermediate: &'a ScriptIntermediate,
 ) -> (

@@ -1,9 +1,9 @@
 use crate::data::SCRIPT_INTERMEDIATE;
 use crate::functions::{
-    identify_type, identify_type_intermediate, make_hash_map, make_hash_map_from_intermediate,
-    CharType,
+    identify_type, identify_type_intermediate, make_hash_map,
+    CharType, make_hash_map_from_script_to_intermediate, make_hash_map_from_intermediate_to_script,
 };
-use crate::read_mappings::Script;
+use crate::read_mappings::{Script};
 use crate::tokens::{Akshara, Others};
 use crate::tokens::{
     Ayogavaha, Aytham, ConsonantsMain, Nukta, Numerals, Om, PersoArabic, Sinhala, South, Symbols,
@@ -542,11 +542,236 @@ pub fn convert_roman_to_roman(input: &str, source: &Script, destination: &Script
     output
 }
 
+pub fn convert_intermediate_to_indic(
+    input: Vec<
+    Akshara<
+        String,
+        Ayogavaha,
+        Aytham,
+        ConsonantsMain,
+        Nukta,
+        Numerals,
+        Om,
+        PersoArabic,
+        Sinhala,
+        South,
+        Symbols,
+        VowelMain,
+        VowelModern,
+        VowelSignMain,
+        VowelSignModern,
+        VowelSignSinhala,
+        VowelSignSouth,
+        VowelSignVirama,
+        VowelSinhala,
+        VowelSouth,
+        Others,
+    >,
+>,
+    destination: &Script,
+) -> String {
+
+    // // Make a hashmap from source characters to corresponding destination ones
+    // // Since all we need now is the consonants, numerals, vowels, vowelsigns, others, we will make only for them for now.
+
+    let my_tuple = make_hash_map_from_intermediate_to_script(destination, &SCRIPT_INTERMEDIATE);
+
+    let hash_map_consonants_main = my_tuple.0;
+    let hash_map_vowels_main =my_tuple.1;
+    let hash_map_vowelsigns_main = my_tuple.2;
+    let hash_map_vowelsigns_virama = my_tuple.3;
+    let hash_map_numerals = my_tuple.4;
+    let hash_map_others_aytham = my_tuple.5;
+    let hash_map_combiningsigns_ayogavaha = my_tuple.6;
+    let hash_map_others_symbols = my_tuple.7;
+
+    // Conversion is easy here because our intermediate is input and only one token needs to be checked at once.
+    let mut output: String = String::new();
+    let len = input.len();
+    let mut was_char: bool = false;
+    for i in 0..len {
+        let s = input[i].clone();
+
+        match s {
+            Akshara::ConsonantsMain(consonant) => {
+                // If previous token was a consonant we push a virama before
+                match was_char {
+                    true => {
+                        output.push_str(destination.vowelsigns.virama[0].as_str());
+                    }
+                    false => {
+                        // Do Nothing
+                    }
+                }
+                // Push the corresponding output consonant
+                output.push_str(hash_map_consonants_main.get(&consonant).unwrap());
+                was_char = true;
+            }
+            Akshara::VowelSignMain(_) | Akshara::VowelMain(_) => {
+                // Check if the previous character in input was a consonant
+                // If so push a vowelsigns.main
+                // else push vowels.main
+
+                // Edge case:
+                // If input is 'a' and was_char is true, we need not push
+                // anything because 'a' is present implicitly at end of every
+                // consonant unless mentioned otherwise
+                
+                match was_char {
+                    true => {
+                        match s {
+                            _ if s == Akshara::VowelMain(VowelMain::a) => {
+                                // Do Nothing
+                            }
+                            _ => {
+                                // First push the vowelsign if it is one
+                                // If not a vowelsign push the vowel
+                                match s {
+                                    Akshara::VowelSignMain(vowelsign) => {
+                                        output.push_str(
+                                            hash_map_vowelsigns_main.get(&vowelsign).unwrap(),
+                                        );
+                                    }
+                                    Akshara::VowelMain(vowel) => {
+                                        output.push_str(
+                                            hash_map_vowels_main.get(&vowel).unwrap(),
+                                        );
+                                    }
+                                    _ => {
+                                        // Do Nothing
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    false => {
+                        // First push the vowel if it is one
+                        // If not a vowel push the vowelsign
+                        match s {
+                            Akshara::VowelMain(vowel) => {
+                                output.push_str(
+                                    hash_map_vowels_main.get(&vowel).unwrap(),
+                                );
+                            }
+                            Akshara::VowelSignMain(vowelsign) => {
+                                output.push_str(
+                                    hash_map_vowelsigns_main.get(&vowelsign).unwrap(),
+                                );
+                            }
+                            _ => {
+                                // Do Nothing
+                            }
+                        }
+                    }
+                }
+                was_char = false;
+            }
+            Akshara::VowelSignVirama(vowelsignvirama) => {
+                output.push_str(hash_map_vowelsigns_virama.get(&vowelsignvirama).unwrap());
+                was_char = false;
+            }
+            Akshara::Symbols(symbol) => {
+                // If previous char was a consonant we push a virama before
+                match was_char {
+                    true => {
+                        output.push_str(destination.vowelsigns.virama[0].as_str());
+                    }
+                    false => {
+                        // Do Nothing
+                    }
+                }
+                output.push_str(hash_map_others_symbols.get(&symbol).unwrap());
+                was_char = false;
+            }
+            Akshara::Aytham(aytham) => {
+                // If previous char was a consonant we push a virama before
+                match was_char {
+                    true => {
+                        output.push_str(destination.vowelsigns.virama[0].as_str());
+                    }
+                    false => {
+                        // Do Nothing
+                    }
+                }
+                output.push_str(hash_map_others_aytham.get(&aytham).unwrap());
+                was_char = false;
+            }
+            Akshara::Ayogavaha(ayogavaha) => {
+                // If previous char was a consonant we push a virama before
+                match was_char {
+                    true => {
+                        output.push_str(destination.vowelsigns.virama[0].as_str());
+                    }
+                    false => {
+                        // Do Nothing
+                    }
+                }
+                output.push_str(hash_map_combiningsigns_ayogavaha.get(&ayogavaha).unwrap());
+                was_char = false;
+            }
+            Akshara::Others(Others::Space) => {
+                // If previous char was a consonant we push a virama before
+                match was_char {
+                    true => {
+                        output.push_str(destination.vowelsigns.virama[0].as_str());
+                    }
+                    false => {
+                        // Do Nothing
+                    }
+                }
+                output.push_str(" ");
+                was_char = false;
+            }
+            Akshara::Others(Others::NewLine) => {
+                // If previous char was a consonant we push a virama before
+                match was_char {
+                    true => {
+                        output.push_str(destination.vowelsigns.virama[0].as_str());
+                    }
+                    false => {
+                        // Do Nothing
+                    }
+                }
+                output.push_str("\n");
+                was_char = false;
+            }
+            Akshara::Numerals(numeral) => {
+                // If previous char was a consonant we push a virama before
+                match was_char {
+                    true => {
+                        output.push_str(destination.vowelsigns.virama[0].as_str());
+                    }
+                    false => {
+                        // Do Nothing
+                    }
+                }
+                output.push_str(hash_map_numerals.get(&numeral).unwrap());
+                was_char = false;
+            }
+            _ => {
+                // If previous char was a consonant we push a virama before
+                match was_char {
+                    true => {
+                        output.push_str(destination.vowelsigns.virama[0].as_str());
+                    }
+                    false => {
+                        // Do Nothing
+                    }
+                }
+                was_char = false;
+            }
+        };
+    }
+
+    output
+}
+
 pub fn convert_indic_to_intermediate(
     input: &str,
     source: &Script,
 ) -> Vec<
     Akshara<
+        String,
         Ayogavaha,
         Aytham,
         ConsonantsMain,
@@ -569,10 +794,11 @@ pub fn convert_indic_to_intermediate(
         Others,
     >,
 > {
+
     // Make a hashmap from source characters to corresponding destination ones
     // Since all we need now is the consonants, numerals, vowels, vowelsigns, others, we will make only for them for now.
 
-    let my_tuple = make_hash_map_from_intermediate(source, &SCRIPT_INTERMEDIATE);
+    let my_tuple = make_hash_map_from_script_to_intermediate(source, &SCRIPT_INTERMEDIATE);
 
     // Make the hash maps
     let hash_map_consonants_main = my_tuple.0;
@@ -587,9 +813,10 @@ pub fn convert_indic_to_intermediate(
     // Conversion is a bit more complicated here. This is because there is often a hidden 'a' after
     // most consonants. We need to check this case by seeing the next character after a consonant.
 
-    // Create the vector of tokens
+    // Create the vector of input
     let mut output: Vec<
         Akshara<
+            String,
             Ayogavaha,
             Aytham,
             ConsonantsMain,
@@ -674,9 +901,11 @@ pub fn convert_indic_to_intermediate(
                 ));
             }
             CharType::VowelSignsVirama => {
-                output.push(Akshara::VowelSignVirama(
-                    *hash_map_vowelsigns_virama.get(s.as_str()).unwrap(),
-                ));
+                // Do Nothing as roman intermediate does not have virama 
+
+                // output.push(Akshara::VowelSignVirama(
+                //     *hash_map_vowelsigns_virama.get(s.as_str()).unwrap(),
+                // ));
             }
             CharType::OthersSymbols => {
                 output.push(Akshara::Symbols(
@@ -704,7 +933,11 @@ pub fn convert_indic_to_intermediate(
                     *hash_map_numerals.get(s.as_str()).unwrap(),
                 ));
             }
-            CharType::CouldNotIdentify => {}
+            CharType::CouldNotIdentify => {
+                output.push(Akshara::Unknown(
+                    s.to_string(),
+                ));
+            }
         };
     }
 
