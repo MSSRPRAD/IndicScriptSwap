@@ -1,9 +1,6 @@
 use crate::{
     read_mappings::{Script, ScriptIntermediate},
-    tokens::{
-        Ayogavaha, Aytham, ConsonantsMain, Numerals, Symbols, VowelMain, VowelSignMain,
-        VowelSignVirama,
-    },
+    tokens::*,
 };
 use std::collections::HashMap;
 
@@ -91,6 +88,66 @@ pub fn identify_type_intermediate(
         return CharType::NewLine;
     } else {
         return CharType::CouldNotIdentify;
+    }
+}
+
+pub fn identify_type_intermediate_new(
+    c: &str,
+    hash_map_consonants_main: &HashMap<&str, ConsonantsMain>,
+    hash_map_vowels_main: &HashMap<&str, VowelMain>,
+    hash_map_vowelsigns_main: &HashMap<&str, VowelSignMain>,
+    hash_map_vowelsigns_virama: &HashMap<&str, VowelSignVirama>,
+    hash_map_numerals: &HashMap<&str, Numerals>,
+    hash_map_others_aytham: &HashMap<&str, Aytham>,
+    hash_map_combining_signs_ayogavaha: &HashMap<&str, Ayogavaha>,
+    hash_map_others_symbols: &HashMap<&str, Symbols>,
+) -> Akshara<
+    String,
+    Ayogavaha,
+    Aytham,
+    ConsonantsMain,
+    Nukta,
+    Numerals,
+    Om,
+    PersoArabic,
+    Sinhala,
+    South,
+    Symbols,
+    VowelMain,
+    VowelModern,
+    VowelSignMain,
+    VowelSignModern,
+    VowelSignSinhala,
+    VowelSignSouth,
+    VowelSignVirama,
+    VowelSinhala,
+    VowelSouth,
+    Others,
+> {
+    {
+        if let Some(consonant) = hash_map_consonants_main.get(c) {
+            return Akshara::ConsonantsMain(*consonant);
+        } else if let Some(ayogavaha) = hash_map_combining_signs_ayogavaha.get(c) {
+            return Akshara::Ayogavaha(*ayogavaha);
+        } else if let Some(vowel) = hash_map_vowels_main.get(c) {
+            return Akshara::VowelMain(*vowel);
+        } else if let Some(vowelsign) = hash_map_vowelsigns_main.get(c) {
+            return Akshara::VowelSignMain(*vowelsign);
+        } else if let Some(virama) = hash_map_vowelsigns_virama.get(c) {
+            return Akshara::VowelSignVirama(*virama);
+        } else if let Some(numeral) = hash_map_numerals.get(c) {
+            return Akshara::Numerals(*numeral);
+        } else if let Some(symbol) = hash_map_others_symbols.get(c) {
+            return Akshara::Symbols(*symbol);
+        } else if let Some(aytham) = hash_map_others_aytham.get(c) {
+            return Akshara::Aytham(*aytham);
+        } else if c == " " {
+            return Akshara::Others(Others::Space);
+        } else if c == "\n" {
+            return Akshara::Others(Others::NewLine);
+        } else {
+            return Akshara::Unknown(c.to_string());
+        }
     }
 }
 

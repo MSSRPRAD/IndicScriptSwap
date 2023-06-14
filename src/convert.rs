@@ -1,7 +1,7 @@
 use crate::data::SCRIPT_INTERMEDIATE;
 use crate::functions::{
     identify_type, identify_type_intermediate, make_hash_map,
-    make_hash_map_from_intermediate_to_script, make_hash_map_from_script_to_intermediate, CharType,
+    make_hash_map_from_intermediate_to_script, make_hash_map_from_script_to_intermediate, CharType, identify_type_intermediate_new,
 };
 use crate::read_mappings::{Other, Script};
 use crate::tokens::{Akshara, Others};
@@ -541,6 +541,8 @@ pub fn convert_roman_to_roman(input: &str, source: &Script, destination: &Script
 
     output
 }
+
+// Intermediate Conversion functions
 
 pub fn convert_intermediate_to_indic(
     input: Vec<
@@ -1211,4 +1213,384 @@ pub fn convert_roman_to_intermediate(
     }
 
     output
+}
+
+
+pub fn convert_roman_to_intermediate_new(
+    input: &str,
+    source: &Script,
+) -> Vec<
+    Akshara<
+        String,
+        Ayogavaha,
+        Aytham,
+        ConsonantsMain,
+        Nukta,
+        Numerals,
+        Om,
+        PersoArabic,
+        Sinhala,
+        South,
+        Symbols,
+        VowelMain,
+        VowelModern,
+        VowelSignMain,
+        VowelSignModern,
+        VowelSignSinhala,
+        VowelSignSouth,
+        VowelSignVirama,
+        VowelSinhala,
+        VowelSouth,
+        Others,
+    >,
+> {
+    // Make a hashmap from source characters to corresponding destination ones
+    // Since all we need now is the consonants, numerals, vowels, vowelsigns, others, we will make only for them for now.
+
+    let my_tuple = make_hash_map_from_script_to_intermediate(source, &SCRIPT_INTERMEDIATE);
+
+    // Make the hash maps
+    let hash_map_consonants_main = my_tuple.0;
+    let hash_map_vowels_main = my_tuple.1;
+    let hash_map_vowelsigns_main = my_tuple.2;
+    let hash_map_vowelsigns_virama = my_tuple.3;
+    let hash_map_numerals = my_tuple.4;
+    let hash_map_others_aytham = my_tuple.5;
+    let hash_map_combiningsigns_ayogavaha = my_tuple.6;
+    let hash_map_others_symbols = my_tuple.7;
+
+    // Conversion is same as convert_roman_to_indic except we don't add viramas
+    // as roman scripts don't have viramas
+    // Create the vector of output
+    let mut output: Vec<
+        Akshara<
+            String,
+            Ayogavaha,
+            Aytham,
+            ConsonantsMain,
+            Nukta,
+            Numerals,
+            Om,
+            PersoArabic,
+            Sinhala,
+            South,
+            Symbols,
+            VowelMain,
+            VowelModern,
+            VowelSignMain,
+            VowelSignModern,
+            VowelSignSinhala,
+            VowelSignSouth,
+            VowelSignVirama,
+            VowelSinhala,
+            VowelSouth,
+            Others,
+        >,
+    > = Vec::new();
+    let len = input.chars().count();
+    let chars: Vec<char> = input.chars().collect();
+    let mut skip: bool = false;
+    let mut skip_twice: bool = false;
+    let mut t = Akshara::Unknown("".to_string());
+    for i in 0..len {
+        if skip {
+            skip = false;
+            continue;
+        }
+        if skip_twice {
+            skip_twice = false;
+            continue;
+        }
+        let s = &mut String::new();
+        let foo = &mut String::new();
+        let foo1 = &mut String::new();
+        s.push(chars[i]);
+        // If a next two characters map
+        if i < len - 2 {
+            foo1.push(chars[i]);
+            foo1.push(chars[i + 1]);
+            foo1.push(chars[i + 2]);
+            t = identify_type_intermediate_new(
+                foo1,
+                &hash_map_consonants_main,
+                &hash_map_vowels_main,
+                &hash_map_vowelsigns_main,
+                &hash_map_vowelsigns_virama,
+                &hash_map_numerals,
+                &hash_map_others_aytham,
+                &hash_map_combiningsigns_ayogavaha,
+                &hash_map_others_symbols,);
+            if let Akshara::Unknown(_) = t {} else
+            {
+                skip = true;
+                skip_twice = true;
+                s.push(chars[i + 1]);
+                s.push(chars[i + 2]);
+            }
+        }
+        // Check for next 1 char
+        if !skip_twice && i < len - 1 {
+            foo.push(chars[i]);
+            foo.push(chars[i + 1]);
+            t = identify_type_intermediate_new(
+                foo,
+                &hash_map_consonants_main,
+                &hash_map_vowels_main,
+                &hash_map_vowelsigns_main,
+                &hash_map_vowelsigns_virama,
+                &hash_map_numerals,
+                &hash_map_others_aytham,
+                &hash_map_combiningsigns_ayogavaha,
+                &hash_map_others_symbols,
+            );
+            if let Akshara::Unknown(_) = t {} else
+            {
+                skip = true;
+                s.push(chars[i + 1]);
+            }
+        }
+        if !skip && !skip_twice {
+            t = identify_type_intermediate_new(
+                s,
+                &hash_map_consonants_main,
+                &hash_map_vowels_main,
+                &hash_map_vowelsigns_main,
+                &hash_map_vowelsigns_virama,
+                &hash_map_numerals,
+                &hash_map_others_aytham,
+                &hash_map_combiningsigns_ayogavaha,
+                &hash_map_others_symbols,);
+        }
+        match t {
+            Akshara::ConsonantsMain(consonant) => {
+                // Push the corresponding output consonant
+                output.push(Akshara::ConsonantsMain(
+                    consonant,
+                ));
+            }
+            Akshara::VowelMain(vowel) => {
+                output.push(Akshara::VowelMain(
+                    vowel,
+                ));
+            }
+            Akshara::VowelSignMain(vowelsign) => {
+                output.push(Akshara::VowelSignMain(
+                    vowelsign,
+                ));
+            }
+            Akshara::VowelSignVirama(virama) => {
+                output.push(Akshara::VowelSignVirama(
+                    virama,
+                ));
+            }
+            Akshara::Symbols(symbol) => {
+                output.push(Akshara::Symbols(
+                    symbol,
+                ));
+            }
+            Akshara::Aytham(aytham) => {
+                output.push(Akshara::Aytham(
+                    aytham,
+                ));
+            }
+            Akshara::Ayogavaha(ayogavaha) => {
+                output.push(Akshara::Ayogavaha(
+                    ayogavaha,
+                ));
+            }
+            Akshara::Others(Others::Space) => {
+                output.push(Akshara::Others(Others::Space));
+            }
+            Akshara::Others(Others::NewLine) => {
+                output.push(Akshara::Others(Others::NewLine));
+            }
+            Akshara::Numerals(numeral) => {
+                output.push(Akshara::Numerals(
+                    numeral,
+                ));
+            }
+            _ => {}
+        };
+    }
+
+    output
+}
+
+
+pub fn convert_indic_to_intermediate_new(
+    input: &str,
+    source: &Script,
+) -> Vec<
+    Akshara<
+        String,
+        Ayogavaha,
+        Aytham,
+        ConsonantsMain,
+        Nukta,
+        Numerals,
+        Om,
+        PersoArabic,
+        Sinhala,
+        South,
+        Symbols,
+        VowelMain,
+        VowelModern,
+        VowelSignMain,
+        VowelSignModern,
+        VowelSignSinhala,
+        VowelSignSouth,
+        VowelSignVirama,
+        VowelSinhala,
+        VowelSouth,
+        Others,
+    >,
+> {
+    // Make a hashmap from source characters to corresponding destination ones
+    // Since all we need now is the consonants, numerals, vowels, vowelsigns, others, we will make only for them for now.
+
+    let my_tuple = make_hash_map_from_script_to_intermediate(source, &SCRIPT_INTERMEDIATE);
+
+    // Make the hash maps
+    let hash_map_consonants_main = my_tuple.0;
+    let hash_map_vowels_main = my_tuple.1;
+    let hash_map_vowelsigns_main = my_tuple.2;
+    let hash_map_vowelsigns_virama = my_tuple.3;
+    let hash_map_numerals = my_tuple.4;
+    let hash_map_others_aytham = my_tuple.5;
+    let hash_map_combiningsigns_ayogavaha = my_tuple.6;
+    let hash_map_others_symbols = my_tuple.7;
+
+    // Conversion is a bit more complicated here. This is because there is often a hidden 'a' after
+    // most consonants. We need to check this case by seeing the next character after a consonant.
+
+    // Create the vector of output
+    let mut output: Vec<
+        Akshara<
+            String,
+            Ayogavaha,
+            Aytham,
+            ConsonantsMain,
+            Nukta,
+            Numerals,
+            Om,
+            PersoArabic,
+            Sinhala,
+            South,
+            Symbols,
+            VowelMain,
+            VowelModern,
+            VowelSignMain,
+            VowelSignModern,
+            VowelSignSinhala,
+            VowelSignSouth,
+            VowelSignVirama,
+            VowelSinhala,
+            VowelSouth,
+            Others,
+        >,
+    > = Vec::new();
+
+    let len = input.chars().count();
+    let chars: Vec<char> = input.chars().collect();
+    for i in 0..len {
+        let s = &mut String::new();
+        s.push(chars[i]);
+        let t = identify_type_intermediate_new(
+            s,
+            &hash_map_consonants_main,
+            &hash_map_vowels_main,
+            &hash_map_vowelsigns_main,
+            &hash_map_vowelsigns_virama,
+            &hash_map_numerals,
+            &hash_map_others_aytham,
+            &hash_map_combiningsigns_ayogavaha,
+            &hash_map_others_symbols,
+        );
+        // println!("char: {:?}", s);
+        // println!("token: {:?}", t);
+        match t {
+            Akshara::ConsonantsMain(consonant) => {
+                // Push the corresponding destination consonant
+                output.push(Akshara::ConsonantsMain(
+                    consonant,
+                ));
+                // If there is a next character
+                if i < len - 1 {
+                    match identify_type_intermediate_new(
+                        &chars[i + 1].to_string(),
+                        &hash_map_consonants_main,
+                        &hash_map_vowels_main,
+                        &hash_map_vowelsigns_main,
+                        &hash_map_vowelsigns_virama,
+                        &hash_map_numerals,
+                        &hash_map_others_aytham,
+                        &hash_map_combiningsigns_ayogavaha,
+                        &hash_map_others_symbols,
+                    ) {
+                        // If the next character is a virama or vowelsign or symbol or it is a vowel
+                        Akshara::VowelSignVirama(_)
+                        | Akshara::Symbols(_)
+                        | Akshara::Numerals(_)
+                        | Akshara::VowelMain(_)
+                        | Akshara::VowelSignMain(_) => {
+                            // Do Nothing
+                        }
+                        // Otherwise add the schwa also to the output
+                        _ => {
+                            // println!("pushing \'a\'");
+                            output.push(Akshara::VowelMain(VowelMain::a));
+                        }
+                    }
+                }
+            }
+            Akshara::VowelMain(vowel) => {
+                output.push(Akshara::VowelMain(
+                    vowel,
+                ));
+            }
+            Akshara::VowelSignMain(vowelsign) => {
+                output.push(Akshara::VowelSignMain(
+                    vowelsign,
+                ));
+            }
+            Akshara::VowelSignVirama(virama) => {
+                // Do Nothing as roman intermediate does not have virama
+
+                // output.push(Akshara::VowelSignVirama(
+                //     *hash_map_vowelsigns_virama.get(s.as_str()).unwrap(),
+                // ));
+            }
+            Akshara::Symbols(symbol) => {
+                output.push(Akshara::Symbols(
+                    symbol,
+                ));
+            }
+            Akshara::Aytham(aytham) => {
+                output.push(Akshara::Aytham(
+                    aytham,
+                ));
+            }
+            Akshara::Ayogavaha(ayogavaha) => {
+                output.push(Akshara::Ayogavaha(
+                    ayogavaha,
+                ));
+            }
+            Akshara::Others(Others::Space) => {
+                output.push(Akshara::Others(Others::Space));
+            }
+            Akshara::Others(Others::NewLine) => {
+                output.push(Akshara::Others(Others::NewLine));
+            }
+            Akshara::Numerals(numeral) => {
+                output.push(Akshara::Numerals(
+                    numeral,
+                ));
+            }
+            _ => {
+                // Do Nothing
+            }
+        };
+    }
+
+    return output;
 }
